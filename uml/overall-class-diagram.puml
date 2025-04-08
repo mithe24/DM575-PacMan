@@ -1,0 +1,33 @@
+@startuml
+top to bottom direction
+
+class PacmanGame <<Model>> {
+    - gameLogic
+}
+
+class PacmanController <<Controller>> {
+    - PacmanView
+    - PacmanGame
+    --
+    - setupEventHandlers()
+}
+
+class PacmanView <<View>> {
+    - uiElements
+}
+
+class GameApp {
+    - PacmanView
+    - PacmanController
+    --
+    + Main()
+}
+
+PacmanController -[hidden]> PacmanView
+GameApp o-- PacmanView
+GameApp o-- PacmanController
+PacmanController o-- PacmanView
+PacmanController o-- PacmanGame
+
+@enduml
+
