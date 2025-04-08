@@ -1,9 +1,8 @@
 /* module-info.java
  * This acts as the manifest for the module.
  */
-module pacman.view {
-    requires javafx.controls;   /* JavaFX dependencies */
-    requires javafx.graphics;
-    requires pacman.model;
-    exports pacman.view;        /* exports make specific packages */
-}                               /* public to other modules */
+module com.gr15.pacman.view {
+    requires transitive javafx.graphics;
+    requires transitive com.gr15.pacman.model;
+    exports com.gr15.pacman.view;
+}
