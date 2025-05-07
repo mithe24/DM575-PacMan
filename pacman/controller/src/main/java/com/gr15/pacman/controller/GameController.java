@@ -5,7 +5,6 @@ import com.gr15.pacman.model.entities.Entity.Direction;
 import com.gr15.pacman.view.GameView;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.paint.Color;
 
 /**
  * GameController
@@ -21,7 +20,6 @@ public class GameController {
     public GameController(GameState gameState, GameView gameView) {
         this.gameState = gameState;
         this.gameView = gameView;
-        gameView.setFill(Color.BLACK);
 
         setupEventHandlers();
         gameLoop = new AnimationTimer() {

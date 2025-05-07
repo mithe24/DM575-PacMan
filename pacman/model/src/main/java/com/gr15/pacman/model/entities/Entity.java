@@ -9,8 +9,8 @@ import com.gr15.pacman.model.Position;
 public abstract class Entity {
 
     private Position position;
-    private float subTileX = 0.0f;
-    private float subTileY = 0.0f;
+    private float subTileX = 0.5f;
+    private float subTileY = 0.5f;
 
     private double radius;
 

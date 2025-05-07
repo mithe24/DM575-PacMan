@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -12,7 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.gr15.pacman.model.Board.Direction;
+import com.gr15.pacman.model.entities.Entity.Direction;
 import com.gr15.pacman.model.Board.TileType;
 import com.gr15.pacman.model.entities.Entity;
 import com.gr15.pacman.model.entities.Ghost;
@@ -106,7 +107,7 @@ public class GameStateBuilder {
                 pacmanJsonObject.getInt("y"));
             Pacman pacman = new Pacman(pacmanStartPos, speed, Direction.NONE, radius);
 
-            ArrayList<Entity> entities = new ArrayList<>();
+            List<Entity> entities = new ArrayList<>();
             Map<Position, Items> items = new HashMap<>();
 
             return new GameState(board, pacman, entities, items);

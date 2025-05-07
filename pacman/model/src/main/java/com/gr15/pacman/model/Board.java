@@ -11,13 +11,13 @@ public class Board {
 
     public enum TileType { WALL, EMPTY };
 
-    public Board(int height, int width) {
+    public Board(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
-    public Board(int height, int width, TileType[][] tileBoard) {
-        this(height, width);
+    public Board(int width, int height, TileType[][] tileBoard) {
+        this(width, height);
         this.tileBoard = tileBoard;
     }
 

@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import com.gr15.pacman.model.entities.Entity;
 import com.gr15.pacman.model.entities.Items;
@@ -30,8 +31,8 @@ public class GameView
 
     private float scaleX = 4.0f;
     private float scaleY = 4.0f;
-    private int tileHeight;
     private int tileWidth;
+    private int tileHeight;
 
     private Map<TileType, Image> tileTextures = new HashMap<>();
     private Map<Entity, Image> entityTextures = new HashMap<>();
@@ -41,7 +42,7 @@ public class GameView
     private Sprite pacmanSprite;
 
     public GameView(GameState gameState, 
-        int tileHeight, int tileWidth) {
+        int tileWidth, int tileHeight) {
         super(new StackPane());
         root = (StackPane)super.getRoot();
 
@@ -52,6 +53,7 @@ public class GameView
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;
         this.gameState = gameState;
+        this.setFill(Color.BLACK);
         
         tileTextures.put(TileType.WALL, new Image(
             this.getClass().getResourceAsStream("/gameAssets/wall.png")));
