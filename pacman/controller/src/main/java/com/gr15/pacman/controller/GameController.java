@@ -1,7 +1,7 @@
 package com.gr15.pacman.controller;
 
 import com.gr15.pacman.model.GameState;
-import com.gr15.pacman.model.Board.Direction;
+import com.gr15.pacman.model.entities.Entity.Direction;
 import com.gr15.pacman.view.GameView;
 
 import javafx.animation.AnimationTimer;

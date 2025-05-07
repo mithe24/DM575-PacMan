@@ -13,6 +13,8 @@ public abstract class Entity {
     private float subTileY = 0.0f;
 
     private double radius;
+
+    public enum Direction { UP, DOWN, LEFT, RIGHT, NONE };
     
     public Entity(Position startPos, double radius) {
         this.radius = radius;

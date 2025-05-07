@@ -3,7 +3,7 @@ package com.gr15.pacman.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gr15.pacman.model.Board.Direction;
+import com.gr15.pacman.model.entities.Entity.Direction;
 import com.gr15.pacman.model.Board.TileType;
 import com.gr15.pacman.model.entities.Entity;
 import com.gr15.pacman.model.entities.Pacman;

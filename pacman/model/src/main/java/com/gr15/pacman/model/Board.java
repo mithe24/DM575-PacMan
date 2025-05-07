@@ -10,7 +10,6 @@ public class Board {
     private int width;
 
     public enum TileType { WALL, EMPTY };
-    public enum Direction { UP, DOWN, LEFT, RIGHT, NONE };
 
     public Board(int height, int width) {
         this.width = width;

@@ -2,7 +2,7 @@ package com.gr15.pacman.model;
 
 import java.util.List;
 
-import com.gr15.pacman.model.Board.Direction;
+import com.gr15.pacman.model.entities.Entity.Direction;
 
 /**
  * Position
