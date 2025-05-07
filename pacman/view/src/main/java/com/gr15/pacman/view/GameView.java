@@ -1,6 +1,7 @@
 package com.gr15.pacman.view;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.gr15.pacman.model.GameState;
@@ -83,7 +84,8 @@ public class GameView
             - 0.5) * 16 * scaleY);
         pacmanSprite.render(gc);
 
-        gameState.getEntities().forEach((pos, entity) -> {
+        List<Entity> entities = gameState.getEntities();
+        for (Entity entity : entities) {
             Image texture = entityTextures.get(entity);
             if (texture != null) {
                 gc.drawImage(texture, 
@@ -92,7 +94,7 @@ public class GameView
                     texture.getWidth() * scaleX,
                     texture.getHeight() * scaleY);
             }
-        });
+        }
 
         gameState.getItems().forEach((pos, item) -> {
             Image texture = itemTextures.get(item);

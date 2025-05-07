@@ -1,7 +1,9 @@
 package com.gr15.pacman.controller;
 
+import java.io.InputStream;
+
 import com.gr15.pacman.model.GameState;
-import com.gr15.pacman.model.JsonParser;
+import com.gr15.pacman.model.GameStateBuilder;
 import com.gr15.pacman.view.GameView;
 
 import javafx.application.Application;
@@ -23,14 +25,13 @@ public class GameApp
         primaryStage.setResizable(false);
         primaryStage.setFullScreen(true);
 
-        try {
-            gameState = JsonParser.getGameState("test");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to load game state: " + e.getMessage());
-        }
-
-        gameView = new GameView(gameState, 8, 5);
+        InputStream inputStream = this.getClass()
+            .getResourceAsStream("/testGameState.json");
+        GameState gameState = GameStateBuilder.fromJson(inputStream);
+        inputStream.close();
+        int tileWidth = gameState.getBoard().getWidth();
+        int tileHeight = gameState.getBoard().getHeight();
+        gameView = new GameView(gameState,tileWidth, tileHeight);
         primaryStage.setScene(gameView);
 
         gameController = new GameController(gameState, gameView);

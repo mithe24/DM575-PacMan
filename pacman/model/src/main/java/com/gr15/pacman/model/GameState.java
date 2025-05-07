@@ -1,5 +1,6 @@
 package com.gr15.pacman.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.gr15.pacman.model.entities.Entity;
@@ -15,15 +16,15 @@ public class GameState {
     private Board board;
 
     private Pacman pacman;
-    private Map<Position, Entity> entities;
+    private List<Entity> entities;
     private Map<Position, Items> items;
 
     private int score = 0;
     private int lives = 3;
     private double powerModeDuration = 0;
 
-    public GameState(Board board, Pacman pacman, 
-            Map<Position, Entity> entities, Map<Position, Items> items) {
+    protected GameState(Board board, Pacman pacman, 
+            List<Entity> entities, Map<Position, Items> items) {
         this.board = board;
         this.entities = entities;
         this.items = items;
@@ -42,7 +43,7 @@ public class GameState {
         powerModeDuration = Math.max(powerModeDuration, 0);
 
         /* updating and checking collisions with entities */
-        entities.forEach((pos, entity) -> { 
+        for (Entity entity : entities) {
             entity.move(board, deltaSeconds);
             if (EntityUtils.hasCollided(pacman, entity)
                 && powerModeDuration == 0) {
@@ -50,7 +51,7 @@ public class GameState {
             } else if (EntityUtils.hasCollided(pacman, entity)) {
                 score += 100;
             }
-        });
+        }
 
         /* checking collisions with items */
         Items item = items.get(pacman.getPosition());
@@ -66,7 +67,7 @@ public class GameState {
     /* Getters and setters */
     public Board getBoard() { return this.board; }
     public Pacman getPacman() { return this.pacman; }
-    public Map<Position, Entity> getEntities() { return this.entities; }
+    public List<Entity> getEntities() { return this.entities; }
     public Map<Position, Items> getItems() { return this.items; }
     public int getScore() { return this.score; }
     public int getLives() { return this.lives; }
@@ -79,7 +80,7 @@ public class GameState {
     public void setItems(Map<Position, Items> newItems) { 
         this.items = newItems; 
     }
-    public void setEntities(Map<Position, Entity> newEntities) { 
+    public void setEntities(List<Entity> newEntities) { 
         this.entities = newEntities; 
     }
 }
