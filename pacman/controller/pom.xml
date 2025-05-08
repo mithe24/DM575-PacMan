@@ -11,6 +11,10 @@
     </parent>
 
     <artifactId>controller</artifactId>
+    <name>pacman-controller</name>
+    <description>
+        JavaFX main entry point and controller logic for the Pacman game.
+    </description>
 
     <dependencies>
         <!-- Dependencies on Model and View Modules -->
@@ -24,6 +28,23 @@
             <artifactId>view</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!-- JavaFX Dependencies -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -34,8 +55,18 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.gr15.pacman.controller.GameApp</mainClass>
+                    <mainClass>
+                        com.gr15.pacman.controller/com.gr15.pacman.controller.GameApp
+                    </mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
