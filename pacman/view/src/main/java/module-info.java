@@ -5,5 +5,7 @@ module com.gr15.pacman.view {
     requires javafx.controls;
     requires javafx.graphics;
     requires com.gr15.pacman.model;
+
+    exports com.gr15.pacman.view.screen;
     exports com.gr15.pacman.view;
 }

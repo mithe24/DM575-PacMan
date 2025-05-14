@@ -1,18 +1,20 @@
-package com.gr15.pacman.view;
+package com.gr15.pacman.view.screen;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gr15.pacman.view.ResourceManager;
+import com.gr15.pacman.view.Sprite;
+
 import com.gr15.pacman.model.GameState;
 import com.gr15.pacman.model.Board.TileType;
 
-import javafx.scene.Scene;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.VBox;
 
 import com.gr15.pacman.model.entities.Entity;
 import com.gr15.pacman.model.entities.Items;
@@ -20,17 +22,16 @@ import com.gr15.pacman.model.entities.Items;
 /**
  * GameView
  */
-public class GameView 
-    extends Scene {
+public class GameView
+    extends VBox {
 
     /* Utils */
     private Canvas canvas;
     private GraphicsContext gc;
     private GameState gameState;
-    private StackPane root;
 
-    private float scaleX = 4.0f;
-    private float scaleY = 4.0f;
+    private float scaleX = 3.0f;
+    private float scaleY = 3.0f;
     private int tileWidth;
     private int tileHeight;
 
@@ -41,24 +42,20 @@ public class GameView
     /* UI elements */
     private Sprite pacmanSprite;
 
-    public GameView(GameState gameState, 
-        int tileWidth, int tileHeight) {
-        super(new StackPane());
-        root = (StackPane)super.getRoot();
-
+    public GameView(GameState gameState, int tileWidth, int tileHeight) {
         canvas = new Canvas(tileWidth * 16 * scaleX, tileHeight * 16 * scaleY);
         gc = canvas.getGraphicsContext2D();
-        root.getChildren().add(canvas);
+        getChildren().add(canvas);
+        setAlignment(Pos.CENTER);
 
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;
         this.gameState = gameState;
-        this.setFill(Color.BLACK);
         
-        tileTextures.put(TileType.WALL, new Image(
-            this.getClass().getResourceAsStream("/gameAssets/wall.png")));
-        pacmanSprite = new Sprite(new Image(
-            this.getClass().getResourceAsStream("/gameAssets/pacmanRight.png")), 
+        tileTextures.put(TileType.WALL, ResourceManager.getInstance()
+            .getTexture("/gameAssets/wall.png"));
+        pacmanSprite = new Sprite(
+            ResourceManager.getInstance().getTexture("/gameAssets/pacmanRight.png"),
             gameState.getPacman().getPositionX() - 0.5, 
             gameState.getPacman().getPositionY() - 0.5, 
             16 * scaleX, 16 * scaleY);
@@ -106,8 +103,11 @@ public class GameView
                     pos.y() * 16 * scaleY,
                     texture.getWidth() * scaleX,
                     texture.getHeight() * scaleY);
-
             }
         });
+    }
+
+    public void requestFocusForInput() {
+        requestFocus();
     }
 }

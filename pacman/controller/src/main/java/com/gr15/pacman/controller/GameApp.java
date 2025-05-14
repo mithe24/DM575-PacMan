@@ -1,12 +1,18 @@
 package com.gr15.pacman.controller;
 
-import java.io.InputStream;
-
 import com.gr15.pacman.model.GameState;
 import com.gr15.pacman.model.GameStateBuilder;
-import com.gr15.pacman.view.GameView;
+import com.gr15.pacman.view.ViewManager;
+import com.gr15.pacman.view.screen.GameView;
+import com.gr15.pacman.view.screen.MainMenuView;
+import com.gr15.pacman.view.screen.PauseView;
+import com.gr15.pacman.view.ViewManager.ViewKeys;
+import com.gr15.pacman.controller.screen.GameController;
+import com.gr15.pacman.controller.screen.MainMenuController;
+import com.gr15.pacman.controller.screen.PauseController;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
@@ -15,9 +21,8 @@ import javafx.stage.Stage;
 public class GameApp
     extends Application {
 
-    GameController gameController;
-    GameView gameView;
-    GameState gameState;
+    private ViewManager viewManager = new ViewManager();
+    private MainMenuView mainMenuView = new MainMenuView();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -25,18 +30,12 @@ public class GameApp
         primaryStage.setResizable(false);
         primaryStage.setFullScreen(true);
 
-        InputStream inputStream = this.getClass()
-            .getResourceAsStream("/testGameState.json");
-        GameState gameState = GameStateBuilder.fromJson(inputStream);
-        inputStream.close();
-        int tileWidth = gameState.getBoard().getWidth();
-        int tileHeight = gameState.getBoard().getHeight();
-        gameView = new GameView(gameState,tileWidth, tileHeight);
-        primaryStage.setScene(gameView);
+        viewManager.addView(ViewKeys.MAIN_MENU, mainMenuView);
+        viewManager.showView(ViewKeys.MAIN_MENU);
+        new MainMenuController(viewManager, mainMenuView);
 
-        gameController = new GameController(gameState, gameView);
-        gameController.startGameLoop();
-
+        Scene scene = new Scene(viewManager, 1920, 1080);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
     
