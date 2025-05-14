@@ -23,7 +23,7 @@ public class MainMenuController {
     }
 
     private void initializeButtons() {
-        mainMenuView.getStartButton().setOnAction((event) -> {
+        mainMenuView.getNewGameButton().setOnAction((event) -> {
             GameState gameState = GameStateBuilder.fromJson(
                 this.getClass().getResourceAsStream("/testGameState.json"));
             int tileWidth = gameState.getBoard().getWidth();
