@@ -32,6 +32,7 @@ public class GameView
 
     private float scaleX = 3.0f;
     private float scaleY = 3.0f;
+
     private int tileWidth;
     private int tileHeight;
 
