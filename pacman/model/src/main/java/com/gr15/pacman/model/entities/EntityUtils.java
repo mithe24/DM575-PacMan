@@ -25,10 +25,10 @@ public final class EntityUtils {
      * @return the distance between the centers of the two entities.
      */
     public static double distance(Entity arg0, Entity arg1) {
-        double arg0X = arg0.getPosition().x() + arg0.getSubTileX();
-        double arg0Y = arg0.getPosition().y() + arg0.getSubTileY();
-        double arg1X = arg1.getPosition().x() + arg1.getSubTileX();
-        double arg1Y = arg1.getPosition().y() + arg1.getSubTileY();
+        double arg0X = arg0.getPositionX();
+        double arg0Y = arg0.getPositionY();
+        double arg1X = arg1.getPositionX();
+        double arg1Y = arg1.getPositionY();
         
         return Math.hypot(arg0X - arg1X, arg0Y - arg1Y);
     }
@@ -42,10 +42,10 @@ public final class EntityUtils {
      * @return true if the entities have collided; false otherwise.
      */
     public static boolean hasCollided(Entity arg0, Entity arg1) {
-        double arg0X = arg0.getPosition().x() + arg0.getSubTileX();
-        double arg0Y = arg0.getPosition().y() + arg0.getSubTileY();
-        double arg1X = arg1.getPosition().x() + arg1.getSubTileX();
-        double arg1Y = arg1.getPosition().y() + arg1.getSubTileY();
+        double arg0X = arg0.getPositionX();
+        double arg0Y = arg0.getPositionY();
+        double arg1X = arg1.getPositionX();
+        double arg1Y = arg1.getPositionY();
 
         double dx = arg0X - arg1X;
         double dy = arg0Y - arg1Y;
