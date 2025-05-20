@@ -3,8 +3,8 @@
  */
 module com.gr15.pacman.controller {
     requires javafx.controls;
-    requires javafx.graphics;
-    requires com.gr15.pacman.view;
+    requires transitive javafx.graphics;
+    requires transitive com.gr15.pacman.view;
     requires com.gr15.pacman.model;
 
     exports com.gr15.pacman.controller;
