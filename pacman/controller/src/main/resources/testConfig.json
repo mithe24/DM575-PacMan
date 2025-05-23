@@ -1,0 +1,41 @@
+{
+    "powerModeDuration": 10.0,
+    "lives": 3,
+    "ghostSpeed": 2.5,
+    "numberOfItems": 36,
+
+    "pacman": {
+        "x": 1,
+        "y": 1,
+        "speed": 3.0,
+    },
+    "redGhost": {
+        "x": 7,
+        "y": 4
+    },
+    "blueGhost": {
+        "x": 7,
+        "y": 5
+    },
+    "pinkGhost": {
+        "x": 7,
+        "y": 6
+    },
+    "orangeGhost": {
+        "x": 7,
+        "y": 7
+    },
+
+    "board": [
+        ["W","W","W","W","W","W","W","W","W"],
+        ["W","p","p","p","P","p","p","p","W"],
+        ["E","p","W","W","p","W","W","p","E"],
+        ["W","p","W","W","p","W","W","p","W"],
+        ["W","p","W","W","p","W","W","p","W"],
+        ["W","P","p","p","P","p","p","P","W"],
+        ["W","p","W","W","p","W","W","p","W"],
+        ["E","p","W","W","p","W","W","p","E"],
+        ["W","p","p","p","P","p","p","p","W"],
+        ["W","W","W","W","W","W","W","W","W"]
+    ]
+}

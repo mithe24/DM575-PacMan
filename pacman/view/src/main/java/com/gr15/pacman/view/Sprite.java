@@ -40,8 +40,23 @@ public class Sprite {
      * @param y the Y-coordinate of the sprite's top-left corner
      * @param width the width of the sprite
      * @param height the height of the sprite
+     * @throws IllegalArgumentException if image is {@code null} or if
+     *      - x is less than 0
+     *      - y is less than 0
+     *      - width is less than 0
+     *      - height is less than 0
      */
     public Sprite(Image image, double x, double y, double width, double height) {
+        if (image == null) {
+            throw new IllegalArgumentException("image must not be be null");
+        }
+        if (x < 0 || y < 0) {
+            throw new IllegalArgumentException("x and y must be a positive number");
+        }
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("width and height must be a positive number");
+        }
+
         this.image = image;
         this.x = x;
         this.y = y;
@@ -59,8 +74,12 @@ public class Sprite {
      * The transformation for rotation is applied around the sprite's center.</p>
      *
      * @param gc the {@link GraphicsContext} to render the sprite to
+     * @trows IllegalArgumentException if gc is {@code null}
      */
     public void render(GraphicsContext gc) {
+        if (gc == null) {
+            throw new IllegalArgumentException("gc must not be null");
+        }
         /* Saving the current transformation */
         gc.save();
 
@@ -141,8 +160,14 @@ public class Sprite {
      * Sets a new image for the sprite.
      * 
      * @param newImage the new image to set
+     * @throws IllegalArgumentException if newImage is {@code null}
      */
-    public void setImage(Image newImage) { this.image = newImage; }
+    public void setImage(Image newImage) {
+        if (newImage == null) {
+            throw new IllegalArgumentException("newImage must not be null");
+        }
+        this.image = newImage;
+    }
 
     /**
      * Sets a new image for the sprite.

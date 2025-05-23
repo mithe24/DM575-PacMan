@@ -42,15 +42,14 @@ public class GameApp
     public void start(Stage primaryStage) throws Exception {
         /* window properties */
         primaryStage.setTitle("Pac-Man");
-        primaryStage.setResizable(false);
-        primaryStage.setFullScreen(true);
 
         /* Adding main menu, and instantiate controller */
-        viewManager.addView(ViewKeys.MAIN_MENU, mainMenuView);
-        viewManager.showView(ViewKeys.MAIN_MENU);
+        viewManager.addView(ViewKeys.MAIN_MENU_VIEW, mainMenuView);
+        viewManager.showView(ViewKeys.MAIN_MENU_VIEW);
         new MainMenuController(viewManager, mainMenuView);
 
-        Scene scene = new Scene(viewManager.getRoot(), 1920, 1080);
+        Scene scene = new Scene(viewManager.getRoot(), 1000, 1000);
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }

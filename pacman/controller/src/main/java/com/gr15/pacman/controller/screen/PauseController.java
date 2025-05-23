@@ -33,19 +33,23 @@ public class PauseController {
      * @param pauseView the pause screen UI
      * @param gameController the game controller to resume or control the game state
      * @param viewManager the view manager for switching between views
+     * @throws IllegalArgumentException if pauseView, gameController or viewManager is {@code null}
      */
     public PauseController(PauseView pauseView, GameController gameController,
         ViewManager viewManager) {
+        if (pauseView == null) {
+            throw new IllegalArgumentException("pauseView must not be null");
+        }
+        if (gameController == null) {
+            throw new IllegalArgumentException("gameController must not be null");
+        }
+        if (viewManager == null) {
+            throw new IllegalArgumentException("viewManager must not be null");
+        }
         this.gameController = gameController;
         this.pauseView = pauseView;
         this.viewManager = viewManager;
-        setupEventHandlers();
-    }
 
-    /**
-     * Initializes event handlers for pause screen buttons and keyboard input.
-     */
-    private void setupEventHandlers() {
         pauseView.getQuitButton().setOnAction(this::exitGame);
         pauseView.getMainMenuButton().setOnAction(this::quitToMainMenu);
         pauseView.getResumeButton().setOnAction(this::resumeGame);
@@ -75,7 +79,7 @@ public class PauseController {
      * @param event the action event triggered by the button
      */
     private void quitToMainMenu(ActionEvent event) {
-        viewManager.showView(ViewKeys.MAIN_MENU);
+        viewManager.showView(ViewKeys.MAIN_MENU_VIEW);
     }
 
     /**

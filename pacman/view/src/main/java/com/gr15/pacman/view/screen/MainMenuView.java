@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * Represents the main menu view of the application, containing UI elements
- * such as buttons for starting a new game, resuming a game, and exiting.
+ * such as buttons for starting a new game, and exiting.
  * 
  * This view extends {@link BaseView} and lays out the buttons vertically
  * centered using a {@link VBox}.
@@ -24,21 +24,18 @@ public class MainMenuView
     /** Button to start a new game. */
     private Button newGameButton = new Button("New Game");
     
-    /** Button resume an existing game. */
-    private Button resumeButton = new Button("Resume");
-    
     /** Button to exit the game. */
     private Button exitButton = new Button("Exit Game");
     
     /**
      * Constructs a new {@code MainMenuView} and initializes the layout with
-     * three main buttons: Resume, New Game, and Exit Game. The layout is
+     * three main buttons: New Game, and Exit Game. The layout is
      * vertically centered.
      */
     public MainMenuView() {
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(resumeButton, newGameButton, exitButton);
-        getChildren().add(root);
+        root.getChildren().addAll(newGameButton, exitButton);
+        this.getChildren().add(root);
     }
 
     /*************************************************************
@@ -73,13 +70,6 @@ public class MainMenuView
      * @return the new game button
      */
     public Button getNewGameButton() { return this.newGameButton; }
-
-    /**
-     * Returns the button used to resume an existing game.
-     *
-     * @return the resume button
-     */
-    public Button getResumeButton() { return this.resumeButton; }
 
     /**
      * Returns the button used to exit the game.

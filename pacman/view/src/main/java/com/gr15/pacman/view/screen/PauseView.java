@@ -38,7 +38,7 @@ public class PauseView
     public PauseView() {
         root.getChildren().addAll(resumeButton, mainMenuButton, quitButton);
         root.setAlignment(Pos.CENTER);
-        getChildren().add(root);
+        this.getChildren().add(root);
     }
 
     /**

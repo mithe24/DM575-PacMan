@@ -57,10 +57,13 @@ public class ResourceManager {
      * the default "missing texture" {@link Image} is returned.
      *
      * @param path the path to the image resource, relative to the classpath
-     * @return the loaded {@link Image},
-     * or a default image if the resource could not be found
+     * @return the loaded {@link Image}, or a default image if the resource could not be found
+     * @throws IllegalArgumentException if path is {@code null}
      */
     public Image getTexture(String path) {
+        if (path == null) {
+            throw new IllegalArgumentException("path must not be null");
+        }
         if (resources.containsKey(path)) {
             return resources.get(path);
         } else {

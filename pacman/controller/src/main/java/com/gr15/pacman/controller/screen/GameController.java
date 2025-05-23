@@ -3,7 +3,9 @@ package com.gr15.pacman.controller.screen;
 import com.gr15.pacman.model.GameState;
 import com.gr15.pacman.model.entities.Entity.Direction;
 import com.gr15.pacman.view.ViewManager;
+import com.gr15.pacman.view.screen.GameOverView;
 import com.gr15.pacman.view.screen.GameView;
+import com.gr15.pacman.view.screen.YouWonView;
 import com.gr15.pacman.view.ViewManager.ViewKeys;
 
 import javafx.animation.AnimationTimer;
@@ -41,13 +43,26 @@ public class GameController {
      * @param gameState the state of the game
      * @param gameView the view that renders the game
      * @param viewManager the manager responsible for switching views
+     * @throws IllegalArgumentException if GameState, gameView or viewManager is {@code null}
      */
     public GameController(GameState gameState, GameView gameView,
             ViewManager viewManager) {
-
+        if (gameState == null) {
+            throw new IllegalArgumentException("gameState must not be null");
+        }
+        if (gameView == null) {
+            throw new IllegalArgumentException("gameView must not be null");
+        }
+        if (viewManager == null) {
+            throw new IllegalArgumentException("viewManager must not be null");
+        }
         this.viewManager = viewManager;
         this.gameState = gameState;
         this.gameView = gameView;
+
+        /* Removing potential unrelated views */
+        viewManager.removeView(ViewKeys.GAME_OVER_VIEW);
+        viewManager.removeView(ViewKeys.YOU_WON_VIEW);
 
         gameView.setOnKeyPressed(this::handleKeyEvent);
 
@@ -59,7 +74,21 @@ public class GameController {
                     lastUpdate = now;
                     return; /* returning early, since no time have elapsed */
                 }
-                
+
+                if (gameState.isWon()) {
+                    YouWonView youWonView = new YouWonView(gameState.getScore());
+                    viewManager.addView(ViewKeys.YOU_WON_VIEW, youWonView);
+                    viewManager.showView(ViewKeys.YOU_WON_VIEW);
+                    new YouWonController(youWonView, viewManager);
+                    stopGameLoop();
+                } else if(gameState.GameOver()) {
+                    GameOverView gameOverView = new GameOverView(gameState.getScore());
+                    viewManager.addView(ViewKeys.GAME_OVER_VIEW, gameOverView);
+                    viewManager.showView(ViewKeys.GAME_OVER_VIEW);
+                    new GameOverController(gameOverView, viewManager);
+                    stopGameLoop();
+                }
+
                 double deltaSeconds = (now - lastUpdate) / 1_000_000_000.0;
                 lastUpdate = now;
 
@@ -84,7 +113,7 @@ public class GameController {
             case PAGE_UP -> gameView.changeZoom(0.1);
             case PAGE_DOWN -> gameView.changeZoom(-0.1);
             case ESCAPE -> {
-                viewManager.showView(ViewKeys.PAUSE);
+                viewManager.showView(ViewKeys.PAUSE_VIEW);
                 stopGameLoop();
             }
             default -> {}

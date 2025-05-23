@@ -28,7 +28,13 @@ public class ViewManager {
     /**
      * Enumeration of all possible view keys used to identify different views.
      */
-    public enum ViewKeys { MAIN_MENU, GAME_VIEW, PAUSE };
+    public enum ViewKeys {
+        MAIN_MENU_VIEW,
+        GAME_VIEW,
+        PAUSE_VIEW,
+        GAME_OVER_VIEW,
+        YOU_WON_VIEW
+    };
 
     /**
      * A map that stores views associated with their corresponding keys.
@@ -51,15 +57,23 @@ public class ViewManager {
      *
      * @param key  the key to identify the view.
      * @param view the view to be added.
-     * @throws IllegalArgumentException if a view with the same key already exists.
+     * @throws IllegalArgumentException if a view with the same key already exists or
+     *      - key is {@code null}
+     *      - view is {@code null}
      */
     public void addView(ViewKeys key, BaseView view) {
+        if (key == null) {
+            throw new IllegalArgumentException("key must not be null");
+        }
+        if (view == null) {
+            throw new IllegalArgumentException("view must not be null");
+        }
         if (views.containsKey(key)) {
             throw new IllegalArgumentException(
                 "View with key " + key + " already exists.");
-        } else {
-            views.put(key, view);
         }
+
+        views.put(key, view);
     }
 
     /**
@@ -67,9 +81,13 @@ public class ViewManager {
      * Calls {@code onExit} on the current view (if any) and {@code onEnter} on the new view.
      *
      * @param key the key of the view to be shown.
-     * @throws IllegalArgumentException if no view exists for the specified key.
+     * @throws IllegalArgumentException if no view exists for the specified key,
+     *      or key is {@code null}
      */
     public void showView(ViewKeys key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key must not be null");
+        }
         if (!views.containsKey(key)) {
             throw new IllegalArgumentException(
                 "No view with key " + key + " exists.");
@@ -90,8 +108,12 @@ public class ViewManager {
      *
      * @param key the key to check.
      * @return {@code true} if a view with the key exists, {@code false} otherwise.
+     * @throws IllegalArgumentException if key is {@code null}
      */
     public boolean hasView(ViewKeys key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key must not be null");
+        }
         return views.containsKey(key);
     }
 
@@ -99,8 +121,12 @@ public class ViewManager {
      * Removes the view associated with the specified key.
      *
      * @param key the key of the view to remove.
+     * @throws IllegalArgumentException if key is {@code null}
      */
     public void removeView(ViewKeys key) {
+        if (key == null) {
+            throw new IllegalArgumentException("key must not be null");
+        }
         views.remove(key);
     }
 

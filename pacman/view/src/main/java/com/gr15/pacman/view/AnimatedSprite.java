@@ -40,7 +40,6 @@ public class AnimatedSprite extends Sprite {
      * @param y the Y-coordinate of the sprite's top-left corner
      * @param width the width of the sprite
      * @param height the height of the sprite
-     * 
      * @throws IllegalArgumentException if {@code frames} is null or empty
      */
     public AnimatedSprite(Image[] frames, double x, double y,
@@ -83,4 +82,3 @@ public class AnimatedSprite extends Sprite {
         }
     }
 }
-
