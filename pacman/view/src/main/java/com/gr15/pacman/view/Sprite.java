@@ -51,10 +51,10 @@ public class Sprite {
             throw new IllegalArgumentException("image must not be be null");
         }
         if (x < 0 || y < 0) {
-            throw new IllegalArgumentException("x and y must be a positive number");
+            throw new IllegalArgumentException("x and y must be greater than or equal 0");
         }
         if (width < 0 || height < 0) {
-            throw new IllegalArgumentException("width and height must be a positive number");
+            throw new IllegalArgumentException("width and height must be greater than or equal 0");
         }
 
         this.image = image;
