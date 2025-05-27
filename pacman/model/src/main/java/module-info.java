@@ -5,4 +5,5 @@ module com.gr15.pacman.model {
     requires org.json;
     exports com.gr15.pacman.model;
     exports com.gr15.pacman.model.entities;
+    exports com.gr15.pacman.model.entities.searching;
 }

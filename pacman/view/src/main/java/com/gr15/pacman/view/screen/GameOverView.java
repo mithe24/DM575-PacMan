@@ -15,8 +15,9 @@ public class GameOverView
 
     private final VBox root = new VBox();
 
-    Label gameOverLabel = new Label("Game Over!");
+    private final Label gameOverLabel = new Label("Game Over!");
     private final Button mainMenuButton = new Button("Return to Main Menu");
+    private final Button playAgainButton = new Button("Play again");
     private final Label scoreLabel;
 
     public GameOverView(int score) {
@@ -29,8 +30,9 @@ public class GameOverView
         scoreLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
 
         mainMenuButton.setFont(Font.font("Arial", 18));
+        playAgainButton.setFont(Font.font("Arial", 18));
 
-        root.getChildren().addAll(gameOverLabel, scoreLabel, mainMenuButton);
+        root.getChildren().addAll(gameOverLabel, scoreLabel, mainMenuButton, playAgainButton);
         this.getChildren().add(root);
     }
     
@@ -45,4 +47,5 @@ public class GameOverView
     }
 
     public Button getMainMenuButton() { return mainMenuButton; }
+    public Button getPlayAgainButton() { return playAgainButton; }
 }

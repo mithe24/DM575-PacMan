@@ -1,5 +1,8 @@
 package com.gr15.pacman.controller.screen;
 
+import java.util.Map;
+
+import com.gr15.pacman.controller.HandlerFactory;
 import com.gr15.pacman.model.GameState;
 import com.gr15.pacman.model.entities.Entity.Direction;
 import com.gr15.pacman.view.ViewManager;
@@ -7,9 +10,10 @@ import com.gr15.pacman.view.screen.GameOverView;
 import com.gr15.pacman.view.screen.GameView;
 import com.gr15.pacman.view.screen.YouWonView;
 import com.gr15.pacman.view.ViewManager.ViewKeys;
+import com.gr15.pacman.view.screen.PauseView;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 /**
  * The {@code GameController} class manages the core game loop,
@@ -22,13 +26,10 @@ import javafx.scene.input.KeyEvent;
 public class GameController {
 
     /** Manages switching between different views/screens. */
-    private final ViewManager viewManager;
+    private ViewManager viewManager = ViewManager.getInstance();
 
     /** Reference to the current game state. */
     private final GameState gameState;
-
-    /** The view responsible for rendering the game. */
-    private final GameView gameView;
 
     /** The main game loop running. */
     private final AnimationTimer gameLoop;
@@ -42,29 +43,36 @@ public class GameController {
      *
      * @param gameState the state of the game
      * @param gameView the view that renders the game
-     * @param viewManager the manager responsible for switching views
-     * @throws IllegalArgumentException if GameState, gameView or viewManager is {@code null}
+     * @throws IllegalArgumentException if GameState or gameView is {@code null}
      */
-    public GameController(GameState gameState, GameView gameView,
-            ViewManager viewManager) {
+    public GameController(GameState gameState, GameView gameView) {
         if (gameState == null) {
             throw new IllegalArgumentException("gameState must not be null");
         }
         if (gameView == null) {
             throw new IllegalArgumentException("gameView must not be null");
         }
-        if (viewManager == null) {
-            throw new IllegalArgumentException("viewManager must not be null");
-        }
-        this.viewManager = viewManager;
+
         this.gameState = gameState;
-        this.gameView = gameView;
 
-        /* Removing potential unrelated views */
-        viewManager.removeView(ViewKeys.GAME_OVER_VIEW);
-        viewManager.removeView(ViewKeys.YOU_WON_VIEW);
+        Map<KeyCode, Runnable> keyBindings = Map.of(
+            KeyCode.UP, () -> gameState.getPacman().setDirection(Direction.UP),
+            KeyCode.DOWN, () -> gameState.getPacman().setDirection(Direction.DOWN),
+            KeyCode.LEFT, () -> gameState.getPacman().setDirection(Direction.LEFT),
+            KeyCode.RIGHT, () -> gameState.getPacman().setDirection(Direction.RIGHT),
+            KeyCode.PAGE_UP, () -> gameView.changeZoom(0.1),
+            KeyCode.PAGE_DOWN, () -> gameView.changeZoom(-0.1),
+            KeyCode.ESCAPE, () -> {
+                viewManager.showView(ViewKeys.PAUSE_VIEW);
+                stopGameLoop();
+            }
+        );
+        gameView.setOnKeyPressed(HandlerFactory.createKeyEventHandler(keyBindings));
 
-        gameView.setOnKeyPressed(this::handleKeyEvent);
+        PauseView pauseView = new PauseView();
+        viewManager.addView(ViewKeys.PAUSE_VIEW, pauseView);
+
+        new PauseController(pauseView, this);
 
         gameLoop = new AnimationTimer() {
 
@@ -76,16 +84,26 @@ public class GameController {
                 }
 
                 if (gameState.isWon()) {
+                    /* Removing potential unrelated views */
+                    viewManager.removeView(ViewKeys.PAUSE_VIEW);
+                    viewManager.removeView(ViewKeys.GAME_OVER_VIEW);
+                    viewManager.removeView(ViewKeys.YOU_WON_VIEW);
+
                     YouWonView youWonView = new YouWonView(gameState.getScore());
                     viewManager.addView(ViewKeys.YOU_WON_VIEW, youWonView);
                     viewManager.showView(ViewKeys.YOU_WON_VIEW);
-                    new YouWonController(youWonView, viewManager);
+                    new YouWonController(youWonView, GameController.this);
                     stopGameLoop();
-                } else if(gameState.GameOver()) {
+                } else if(gameState.gameOver()) {
+                    /* Removing potential unrelated views */
+                    viewManager.removeView(ViewKeys.PAUSE_VIEW);
+                    viewManager.removeView(ViewKeys.GAME_OVER_VIEW);
+                    viewManager.removeView(ViewKeys.YOU_WON_VIEW);
+
                     GameOverView gameOverView = new GameOverView(gameState.getScore());
                     viewManager.addView(ViewKeys.GAME_OVER_VIEW, gameOverView);
                     viewManager.showView(ViewKeys.GAME_OVER_VIEW);
-                    new GameOverController(gameOverView, viewManager);
+                    new GameOverController(gameOverView, GameController.this);
                     stopGameLoop();
                 }
 
@@ -99,25 +117,10 @@ public class GameController {
     }
 
     /**
-     * Handles keyboard input for controlling the game, including
-     * Pac-Man's movement and other interactions like zoom or pausing.
-     *
-     * @param event the key event triggered by user input
+     * Resets game to initial state.
      */
-    private void handleKeyEvent(KeyEvent event) {
-        switch (event.getCode()) {
-            case UP -> gameState.getPacman().setDirection(Direction.UP);
-            case DOWN -> gameState.getPacman().setDirection(Direction.DOWN);
-            case LEFT -> gameState.getPacman().setDirection(Direction.LEFT);
-            case RIGHT -> gameState.getPacman().setDirection(Direction.RIGHT);
-            case PAGE_UP -> gameView.changeZoom(0.1);
-            case PAGE_DOWN -> gameView.changeZoom(-0.1);
-            case ESCAPE -> {
-                viewManager.showView(ViewKeys.PAUSE_VIEW);
-                stopGameLoop();
-            }
-            default -> {}
-        }
+    public void resetGame() {
+        gameState.resetGame();
     }
 
     /**

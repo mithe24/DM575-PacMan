@@ -1,0 +1,101 @@
+@startuml
+
+class Sprite {
+    - Image image
+    - double x
+    - double y
+    - double width
+    - double height
+    - double rotation
+    --
+    + void render(GraphicsContext gc)
+}
+
+class AnimatedSprite {
+    - Image[] frames
+    --
+    + void update(double deltaSeconds)
+}
+
+enum ViewKeys {
+    MAIN_MENU_VIEW
+    GAME_VIEW
+    PAUSE_VIEW
+    GAME_OVER_VIEW
+    YOU_WON_VIEW
+}
+
+class ViewManager {
+    - StackPane root
+    - BaseView currentView
+    - Map<ViewKeys, BaseView> views
+    --
+    + void addView(BaseView view)
+    + void removeView(ViewKeys key)
+    + boolean hasKey(ViewKeys key)
+    + Parent getRoot()
+}
+
+class ResourceManager <<singleton>> {
+    - static ResourceManager instance
+    - Map<String, Image> textures
+    - Image missingTexture 
+    --
+    - ResourceManager()
+    + static ResourceManager getInstance()
+    + Image getTexture()
+}
+
+abstract class BaseView <<abstract>> {
+    --
+    + void onEnter()
+    + void onExit()
+}
+
+class MainMenuView
+class PauseView
+class YouWonView
+class GameOverView
+
+class GameView {
+    --
+    + void renderGame(double deltaSeconds)
+    - void renderBoard()
+    - void renderEntity(Entity entity)
+}
+
+class Image
+class GraphicsContext
+abstract Parent
+class GameState
+
+' -------------------------------
+' Inheritance
+' -------------------------------
+Parent <|-- BaseView
+BaseView <|-- MainMenuView
+BaseView <|-- PauseView
+BaseView <|-- YouWonView
+BaseView <|-- GameOverView
+BaseView <|-- GameView
+AnimatedSprite --|> Sprite
+
+' -------------------------------
+' Associations
+' -------------------------------
+GameView --> ResourceManager : fetches textures
+Sprite ..> GraphicsContext : renders on
+ViewManager --> ViewKeys : uses as keys
+
+' -------------------------------
+' Aggregations
+' -------------------------------
+ResourceManager --o Image
+ViewManager --o BaseView : manages views
+GameState o-- GameView : renders from
+Image o-- Sprite : has
+Sprite o-- GameView : has
+AnimatedSprite o-- GameView : has
+
+@enduml
+

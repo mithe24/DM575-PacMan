@@ -1,6 +1,6 @@
 package com.gr15.pacman.model.entities;
 
-import com.gr15.pacman.model.Board;
+import com.gr15.pacman.model.GameState.TileType;
 import com.gr15.pacman.model.Position;
 
 /**
@@ -13,8 +13,7 @@ import com.gr15.pacman.model.Position;
  *
  * <p> The full world coordinates are computed by combining
  * the integer {@code Position} with
- * {@code subTileX} and {@code subTileY}, allowing sub-tile precision
- * useful for animation or collision detection. </p>
+ * {@code subTileX} and {@code subTileY}, allowing sub-tile precision. </p>
  *
  * <p> Handles movement logic including direction changes, wall collisions,
  * snapping to tile centers, and updating position on the game board. </p>
@@ -27,10 +26,11 @@ public abstract class Entity {
 
     private double radius;
 
-    private Direction currentDirection = Direction.UP;
+    private Direction currentDirection = Direction.NONE;
     private Direction nextDirection = Direction.NONE;
     private double speed;
 
+    /** Enumeration of all possible directions entities can move in. */
     public enum Direction { UP, DOWN, LEFT, RIGHT, NONE };
     
     /**
@@ -39,9 +39,9 @@ public abstract class Entity {
      * @param startPos The initial tile-based position of the entity.
      * @param radius The collision radius of the entity.
      * @throws IllegalArgumentException if any parameter is invalid:
-     *         - startPos is null
-     *         - radius is less than or equal to zero
-     *         - speed is less than zero
+     *      - startPos is null
+     *      - radius is less than or equal to zero
+     *      - speed is less than zero
      */
     public Entity(Position startPos, double radius, double speed) {
         if (startPos == null) {
@@ -60,15 +60,15 @@ public abstract class Entity {
 
     /**
      * Updates Pacman's {@link Position} based on the time elapsed
-     * and the game {@link Board} state.
-     * Handles turning, snapping to tile center, 
-     * and tile boundary transitions.
+     * and the game {@link TileType} state.
+     * Handles turning, and tile boundary transitions.
+     * Handles moving through multiple tiles by stepping.
      *
-     * @param board the game {@link Board}, used to determine valid movement.
+     * @param board the game {@link TileType}, used to determine valid movement.
      * @param deltaSeconds time in seconds since the last update in seconds.
      * @throws IllegalArgumentException if board is {@code null}
      */
-    public void move(Board board, double deltaSeconds) {
+    public void move(TileType[][] board, double deltaSeconds) {
         if (board == null) {
             throw new IllegalArgumentException("board must not be null");
         }
@@ -115,7 +115,8 @@ public abstract class Entity {
             /* Handling crossing tile boundery */
             if (crossedTileBoundary(direction, newSubPrimary)) {
                 Position nextPos = position.offset(direction);
-                if (board.isMovable(nextPos)) {
+                if (nextPos.inBounds(board) 
+                    && board[nextPos.y()][nextPos.x()] != TileType.WALL) {
                     position = nextPos;
                     subPrimary = directionSign > 0 ? 0.0 : 1.0;
                 } else {
@@ -139,7 +140,7 @@ public abstract class Entity {
             subTileX = (float)subPrimary;
         }
 
-        if (canMoveNext && distanceToMove < 0.0003) {
+        if (canMoveNext && distanceToCenter < 0.0003) {
             currentDirection = nextDirection;
             nextDirection = Direction.NONE;
         }
@@ -149,22 +150,24 @@ public abstract class Entity {
      * Helper function that determines if Pacman can move 
      * in the specified direction.
      *
-     * @param board the game {@link Board}.
+     * @param board the game board of {@link TileType}.
      * @param pos the current {@link Position}.
      * @param dir the direction to check.
-     * @return true if the tile in the given {@link Direction} is movable.
+     * @return {@code true} if the tile in the given {@link Direction} is movable.
      */
-    private boolean canMove(Board board, Position pos, Direction dir) {
+    private boolean canMove(TileType[][] board, Position pos, Direction dir) {
         assert board != null && pos != null && dir != null;
-        return dir != Direction.NONE && board.isMovable(pos.offset(dir));
+        Position next = pos.offset(dir);
+        return dir != Direction.NONE && next.inBounds(board) 
+            && board[next.y()][next.x()] != TileType.WALL;
     }
 
     /**
-     * Helper function that decides the direction to move in
-     * based on current and next direction availability.
+     * Helper function that decides the {@link Direction} to move in
+     * based on current and next {@link Direction} availability.
      *
-     * @param canMoveNext true if the next direction is available.
-     * @param canContinue true if continuing in the current direction is possible.
+     * @param canMoveNext true if the next {@link Direction} is available.
+     * @param canContinue true if continuing in the current {@link Direction} is possible.
      * @return the direction Pacman should move in.
      */
     private Direction decideDirection(boolean canMoveNext, boolean canContinue) {
@@ -174,10 +177,10 @@ public abstract class Entity {
     }
 
     /**
-     * helper function that checks if a direction is vertical.
+     * helper function that checks if a {@link Direction} is vertical.
      *
-     * @param dir the direction to check.
-     * @return true if the direction is {@link Direction.UP} or {@link Direction.DOWN}.
+     * @param dir the {@link Direction} to check.
+     * @return {@code true} if the direction is {@link Direction.UP} or {@link Direction.DOWN}.
      */
     private boolean isVertical(Direction dir) {
         assert dir != null;
@@ -187,7 +190,7 @@ public abstract class Entity {
     /**
      * Helper function that gets the sign of movement for a {@link Direction}.
      *
-     * @param dir the direction.
+     * @param dir the {@link Direction}.
      * @return -1 for UP or LEFT and 1 for DOWN or RIGHT.
      */
     private int getDirectionSign(Direction dir) {
@@ -196,11 +199,11 @@ public abstract class Entity {
     }
 
     /**
-     * Helper function that determines if Pacman has crossed a tile boundary.
+     * Helper function that determines if the entity has crossed a tile boundary.
      *
-     * @param dir the direction of movement.
+     * @param dir the {@link Direction} of movement.
      * @param newPrimary the new sub-tile coordinate in the movement axis.
-     * @return true if a tile boundary was crossed.
+     * @return {@code true} if a tile boundary was crossed.
      */
     private boolean crossedTileBoundary(Direction dir, double newPrimary) {
         assert dir != null;
@@ -211,9 +214,10 @@ public abstract class Entity {
     }
 
     /**
-     * Helper function that snaps Pacman toward the center of the tile when not moving.
-     *
-     * @param distanceToMove the maximum distance Pacman can move.
+     * Helper function that snaps the entity toward
+     * the center of the tile when not moving.
+     
+     * @param distanceToMove the maximum distance the entity can move.
      */
     private void snapToCenter(double distanceToMove) {
         double center = 0.5;
@@ -223,7 +227,8 @@ public abstract class Entity {
     }
 
     /**
-     * Helper function that moves a sub-tile coordinate toward the center up to a maximum distance.
+     * Helper function that moves a sub-tile coordinate
+     * toward the center up to a maximum distance.
      *
      * @param sub the current sub-coordinate.
      * @param center the center coordinate (typically 0.5).
@@ -239,9 +244,12 @@ public abstract class Entity {
         }
     }
 
-                            /* Getters */
+    /*************************************************************
+     *                          Getters                          *
+     *************************************************************/
+
     /**
-     * Gets the tile-based position of the entity.
+     * Gets the tile-based {@link Position} of the entity.
      *
      * @return The current tile position.
      */
@@ -269,23 +277,25 @@ public abstract class Entity {
     public double getY() { return position.y() + subTileY; }
 
     /**
-     * Gets the current speed of Pacman.
+     * Gets the current speed of the entity.
      *
      * @return the speed in tiles per second.
      */
     public double getSpeed() { return this.speed; }
 
     /**
-     * Gets the current movement direction of Pacman.
+     * Gets the current movement direction of the entity.
      *
      * @return the current {@link Direction}.
      */
     public Direction getDirection() { return this.currentDirection; }
 
+    /*************************************************************
+     *                          Setters                          *
+     *************************************************************/
 
-                            /* Setters */
     /**
-     * Sets the entity's tile-based position.
+     * Sets the entity's tile-based {@link Position}.
      *
      * @param newPos The new tile position to set (not {@code null})
      * @throws IllegalArgumentException if newPos is null
@@ -319,16 +329,16 @@ public abstract class Entity {
     public void setRadius(double newRad) { this.radius = newRad; }
 
     /**
-     * Sets a new speed for Pacman.
+     * Sets a new speed for the entity.
      *
      * @param newSpeed the new speed value in tiles per second.
      */
     public void setSpeed(double newSpeed) { this.speed = newSpeed; }
 
     /**
-     * Requests Pacman to change direction at the next available opportunity.
+     * Requests the entity to change direction at the next available opportunity.
      *
-     * @param newDir the desired direction.
+     * @param newDir the desired {@link Direction}.
      */
     public void setDirection(Direction newDir) { this.nextDirection = newDir; }
 }

@@ -1,6 +1,5 @@
 package com.gr15.pacman.model.entities;
 
-import com.gr15.pacman.model.Board;
 import com.gr15.pacman.model.Position;
 
 /**

@@ -1,0 +1,122 @@
+@startuml
+
+class Position <<record>> {
+    + int x
+    + int y
+    --
+    + Position offset(Direction dir)
+    + List<Position> neighbours()
+    + boolean inBounds(TileType[][] board)
+    + double distance(Position)
+}
+
+abstract class Entity <<abstract>> {
+    - Position pos
+    - Direction dir
+    - double speed
+    --
+    + void move(deltaSeconds)
+}
+
+class Pacman <<marker>> {
+}
+
+interface SearchStrategy {
+    --
+    + void search(Position start, Position goal, Function<Position, Boolean> isWalkable)
+}
+
+class BreadthFirstSearch
+
+class Ghost {
+    - SearchStrategy searchStrategy
+    - Position goal
+    --
+    + void move(deltaSeconds)
+}
+
+class EntityUtils <<utility>> {
+    --
+    + static double distance(Entity arg0, Entity arg1)
+    + static boolean hasCollided(Entity arg0, Entity arg1)
+}
+
+enum TileType {
+    WALL
+    EMPTY
+    PELLET
+    POWER_PELLET
+}
+
+enum Direction {
+    UP
+    DOWN
+    LEFT
+    RIGHT
+    NONE
+}
+
+class GameConfig <<record>> {
+    + TileType[][] initialBoard
+    + double powerModeDuration
+    + int lives
+    + double ghostSpeed
+    + double pacmanSpeed
+    + int numberOfItems
+    + Position pacmanStartPosition
+    + Position redGhostStartPosition
+    + Position blueGhostStartPosition
+    + Position pinkGhostStartPosition
+    + Position orangeGhostStartPosition
+    --
+    - static TileType[][] deepCopy(TileType[][])
+}
+
+class GameConfigBuilder <<utility>> {
+    --
+    + static GameConfig fromJson(InputStream)
+    - static GameConfig buildFromJsonObject(JSONObject)
+    - static TileType[][] parseBoard(JSONArray)
+}
+
+class GameState {
+    - GameConfig config
+    - TileType[][] board
+    - Pacman pacman
+    - List<Ghost> ghosts
+    - double powerModeDuration
+    - int score
+    - int lives
+    - int numberOfItemsLeft
+    --
+    + update(deltaSeconds)
+    + void resetGame()
+    + boolean gameOver()
+    + boolean isWon()
+    - void ghostDied()
+    - void pacmanDied()
+}
+
+class InputStream
+
+GameState o-- "1" GameConfig : has a
+GameState o-- "1" Pacman : has 
+GameState o-- "4" Ghost : has
+Entity o-- "1" Position : has a
+
+BreadthFirstSearch ..|> SearchStrategy : implements
+
+GameConfigBuilder ..> GameConfig : creates
+GameConfigBuilder ..> InputStream : reads
+
+Entity <|-- Ghost : extends
+Entity <|-- Pacman : extends
+
+Ghost ..> SearchStrategy : searches with
+GameState ..> TileType : board
+Entity ..> Direction : movement
+Position ..> Direction : offset
+GameState ..> EntityUtils : collision detection
+
+@enduml
+

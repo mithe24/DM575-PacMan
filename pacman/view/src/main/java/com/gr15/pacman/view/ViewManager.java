@@ -19,11 +19,19 @@ import javafx.scene.paint.Color;
  */
 public class ViewManager {
 
+    /** Singleton instance of ViewManager. */
+    private static ViewManager instance;
+
     /** The root container holding the currently displayed view. */
     private StackPane rootPane = new StackPane();
 
     /** The currently active view. */
     private BaseView currentView;
+
+    /**
+     * A map that stores views associated with their corresponding keys.
+     */
+    private Map<ViewKeys, BaseView> views = new HashMap<>();
 
     /**
      * Enumeration of all possible view keys used to identify different views.
@@ -37,19 +45,29 @@ public class ViewManager {
     };
 
     /**
-     * A map that stores views associated with their corresponding keys.
-     */
-    private Map<ViewKeys, BaseView> views = new HashMap<>();
-
-    /**
+     * Private constructor to adhere to the singleton pattern.
      * Constructs a new {@code ViewManager} with a black background.
      */
-    public ViewManager() {
+    private ViewManager() {
         rootPane.setBackground(new Background(new BackgroundFill(
             Color.BLACK,
             CornerRadii.EMPTY,
             Insets.EMPTY
         )));
+    }
+
+    /**
+     * Returns the singleton instance of {@code ViewManager}.
+     * If it does not exist yet, it is created.
+     *
+     * @return the singleton instance of {@code ViewManager}.
+     */
+    public static ViewManager getInstance() {
+        if (instance == null) {
+            instance = new ViewManager();
+        }
+
+        return instance;
     }
 
     /**

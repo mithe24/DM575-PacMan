@@ -4,28 +4,34 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class YouWonView
     extends BaseView {
     
-    private VBox root = new VBox(20);
+    private VBox root = new VBox();
 
-    private final Label winMessage = new Label("🎉 You Win! 🎉");
-    private final Label finalScoreLabel;
+    private final Label winLabel = new Label("You Win!");
+    private final Button playAgainButton = new Button("Play again");
     private final Button mainMenuButton = new Button("Main Menu");
+    private final Label scoreLabel;
 
     public YouWonView(int score) {
-        finalScoreLabel = new Label("Final Score: " + score);
+        scoreLabel = new Label("Score: " + score);
 
-        winMessage.setStyle("-fx-font-size: 36px; -fx-text-fill: white;");
-        finalScoreLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
-        mainMenuButton.setPrefWidth(200);
+        winLabel.setTextFill(Color.RED);
+        winLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
 
+        scoreLabel.setTextFill(Color.WHITE);
+        scoreLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 24));
 
+        mainMenuButton.setFont(Font.font("Arial", 18));
+        playAgainButton.setFont(Font.font("Arial", 18));
 
-        root.setAlignment(Pos.CENTER);
-        setStyle("-fx-background-color: black;");
-        this.getChildren().addAll(winMessage, finalScoreLabel, mainMenuButton);
+        root.getChildren().addAll(winLabel, scoreLabel, mainMenuButton, playAgainButton);
+        this.getChildren().add(root);
     }
 
     @Override
@@ -39,4 +45,5 @@ public class YouWonView
     }
 
     public Button getMainMenuButton() { return mainMenuButton; }
+    public Button getPlayAgainButton() { return playAgainButton; }
 }

@@ -23,7 +23,7 @@ public class GameApp
     extends Application {
 
     /** Manages the different views (scenes) of the application. */
-    private ViewManager viewManager = new ViewManager();
+    private ViewManager viewManager = ViewManager.getInstance();
 
     /** The main menu view shown when the application starts. */
     private MainMenuView mainMenuView = new MainMenuView();
@@ -42,13 +42,14 @@ public class GameApp
     public void start(Stage primaryStage) throws Exception {
         /* window properties */
         primaryStage.setTitle("Pac-Man");
+        primaryStage.setFullScreen(true);
 
         /* Adding main menu, and instantiate controller */
         viewManager.addView(ViewKeys.MAIN_MENU_VIEW, mainMenuView);
         viewManager.showView(ViewKeys.MAIN_MENU_VIEW);
-        new MainMenuController(viewManager, mainMenuView);
+        new MainMenuController(mainMenuView);
 
-        Scene scene = new Scene(viewManager.getRoot(), 1000, 1000);
+        Scene scene = new Scene(viewManager.getRoot(), 500, 500);
 
         primaryStage.setScene(scene);
         primaryStage.show();

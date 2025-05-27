@@ -2,7 +2,7 @@ package com.gr15.pacman.model;
 
 import java.util.List;
 
-import com.gr15.pacman.model.Board.TileType;
+import com.gr15.pacman.model.GameState.TileType;
 import com.gr15.pacman.model.entities.Entity.Direction;
 
 /**
@@ -49,8 +49,7 @@ public record Position(int x, int y) {
         if (board == null) {
             throw new IllegalArgumentException("board must not be null");
         }
-        return y >= 0 && y < board.length
-            && x >= 0 && x < board[y].length; 
+        return y >= 0 && y < board.length && x >= 0 && x < board[y].length;
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.gr15.pacman.view.screen;
 
 import com.gr15.pacman.model.GameState;
-import com.gr15.pacman.model.Board.TileType;
+import com.gr15.pacman.model.GameState.TileType;
 import com.gr15.pacman.model.entities.Entity;
 import com.gr15.pacman.model.entities.Ghost;
 import com.gr15.pacman.model.entities.Pacman;
@@ -45,10 +45,10 @@ public class GameView
      *************************************************************/
 
     /** Target width of the {@link Canvas} for consistent rendering. */
-    private static final double VIRTUAL_WIDTH = 1000;
+    private static final double VIRTUAL_WIDTH = 500;
 
     /** Target width of the {@link Canvas} for consistent rendering. */
-    private static final double VIRTUAL_HEIGHT = 800;
+    private static final double VIRTUAL_HEIGHT = 400;
 
     /** Size of each tile in pixels. */
     private static final int TILE_SIZE = 16; 
@@ -146,7 +146,7 @@ public class GameView
         hudPanel.getChildren().addAll(scoreLabel, livesLabel, timeLabel);
 
         root.setCenter(canvas);
-        root.setTop(hudPanel);
+        root.setBottom(hudPanel);
         this.getChildren().add(root);
 
         /* Setting up animated sprites */
@@ -261,7 +261,7 @@ public class GameView
      * Draws wall textures and leaves empty tiles blank.
      */
     private void renderBoard() {
-        TileType[][] tileBoard = gameState.getBoard().getTileBoard();
+        TileType[][] tileBoard = gameState.getBoard();
         for (int y = 0; y < tileBoard.length; y++) {
             for (int x = 0; x < tileBoard[y].length; x++) {
                 TileType tile = tileBoard[y][x];

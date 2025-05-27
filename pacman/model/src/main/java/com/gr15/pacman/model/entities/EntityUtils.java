@@ -4,20 +4,18 @@ package com.gr15.pacman.model.entities;
  * Utility class providing helper methods 
  * for working with {@link Entity} objects.
  * 
- * <p>
- * This class includes methods for calculating distances
+ * <p> This class includes methods for calculating distances
  * and detecting collisions
  * between entities in the game world,
- * taking into account their sub-tile positions and radii.
- * </p>
+ * taking into account their sub-tile positions and radii. </p>
  *
- * <p>This class is final and cannot be instantiated.</p>
+ * <p> This class is final and cannot be instantiated. </p>
  */
 public final class EntityUtils {
 
     /**
      * Calculates the Euclidean distance between
-     * two entities based on their position and sub-tile offsets.
+     * two entities based on their position.
      *
      * @param arg0 the first entity (must not be {@code null})
      * @param arg1 the second entity (mus not be {@code null})
@@ -45,7 +43,8 @@ public final class EntityUtils {
      *
      * @param arg0 the first entity (must not be {@code null})
      * @param arg1 the second entity (must not be {@code null})
-     * @return {@code true} if the entities' bounding circles intersect or touch; {@code false} otherwise
+     * @return {@code true} if the entities bounding circles
+     *      intersect or touch; {@code false} otherwise
      * @throws IllegalArgumentException if {@code arg0} or {@code arg1} is {@code null}
      */
     public static boolean hasCollided(Entity arg0, Entity arg1) {
@@ -60,4 +59,7 @@ public final class EntityUtils {
         double combinedRadius = arg0.getRadius() + arg1.getRadius();
         return distanceSquared <= combinedRadius * combinedRadius;
     }
+
+    /** Private constructor to prevent external instantiation */
+    private EntityUtils() {}
 }

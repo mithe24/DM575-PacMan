@@ -29,7 +29,7 @@ public class Sprite {
     private double height;
 
     /** The rotation of the sprite in degrees (0-360). */
-    private double rotation;
+    private double rotation = 0;
 
     /**
      * Constructs a new {@code Sprite} with the specified
@@ -62,7 +62,6 @@ public class Sprite {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.rotation = 0;
     }
 
     /**

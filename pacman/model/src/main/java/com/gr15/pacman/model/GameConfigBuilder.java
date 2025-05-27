@@ -9,15 +9,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.gr15.pacman.model.Board.TileType;
+import com.gr15.pacman.model.GameState.TileType;
 
 /**
  * Utility class for building a {@link GameConfig} instance from a JSON file.
- * <p>
- * This class provides methods to parse a JSON configuration and convert it into
- * an instance of {@code GameConfig}, handling all necessary conversions and validations.
+ *
+ * <p> This class provides methods to parse a JSON configuration and convert it into
+ * an instance of {@code GameConfig}, handling all necessary conversions and validations. </p>
  */
-public class ConfigBuilder {
+public class GameConfigBuilder {
 
     /**
      * Parses a JSON configuration file from an {@link InputStream},
@@ -36,12 +36,11 @@ public class ConfigBuilder {
             JSONObject jsonObject = new JSONObject(tokener);
             return buildFromJsonObject(jsonObject);
         } catch (JSONException jsonException) {
-            throw new RuntimeException("""
-                Failed to parse JSON file, ill formated JSON file.""", jsonException);
+            throw new RuntimeException(
+                "Failed to parse JSON file, ill formated JSON file.", jsonException);
         } catch (IOException ioException) {
-            throw new RuntimeException("""
-                Error reading JSON file. 
-                Ensure the file exists and is accessible""", ioException);
+            throw new RuntimeException(
+                "Error reading JSON file. Ensure the file exists and is accessible", ioException);
         }
     }
 
@@ -71,22 +70,22 @@ public class ConfigBuilder {
             /* Ghost Entities */
             /* Red Ghost */
             JSONObject redGhostObject = jsonObject.getJSONObject("redGhost");
-            Position redGhostStartPosition = new Position(redGhostObject.getInt("x"),
-                redGhostObject.getInt("y"));
+            Position redGhostStartPosition = new Position(
+                redGhostObject.getInt("x"), redGhostObject.getInt("y"));
             /* Blue Ghost */
             JSONObject blueGhostObject = jsonObject.getJSONObject("blueGhost");
-            Position blueGhostStartPosition = new Position(blueGhostObject.getInt("x"),
-                blueGhostObject.getInt("y"));
+            Position blueGhostStartPosition = new Position(
+                blueGhostObject.getInt("x"), blueGhostObject.getInt("y"));
 
             /* Pink Ghost */
             JSONObject pinkGhostObject = jsonObject.getJSONObject("pinkGhost");
-            Position pinkGhostStartPosition = new Position(pinkGhostObject.getInt("x"),
-                pinkGhostObject.getInt("y"));
+            Position pinkGhostStartPosition = new Position(
+                pinkGhostObject.getInt("x"), pinkGhostObject.getInt("y"));
 
             /* Orange Ghost */
             JSONObject orangeGhostObject = jsonObject.getJSONObject("orangeGhost");
-            Position orangeGhostStartPosition = new Position(orangeGhostObject.getInt("x"),
-                orangeGhostObject.getInt("y"));
+            Position orangeGhostStartPosition = new Position(
+                orangeGhostObject.getInt("x"), orangeGhostObject.getInt("y"));
 
             return new GameConfig(
                 initialBoard,
@@ -101,14 +100,13 @@ public class ConfigBuilder {
                 pinkGhostStartPosition,
                 orangeGhostStartPosition);
         } catch (JSONException jsonException) {
-            throw new RuntimeException("""
-                Missing requried config fields in JSON file.""", jsonException);
+            throw new RuntimeException("Missing requried config fields in JSON file.", jsonException);
         }
     }
 
     /**
      * Parses a 2D array of {@link TileType} from a {@link JSONArray} representing the board.
-     * <p>
+     *
      * Expected JSON tile symbols:
      * <ul>
      *   <li>"W" - Wall</li>
