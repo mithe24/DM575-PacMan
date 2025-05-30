@@ -34,7 +34,7 @@ Ghost "1" *-- "1" SearchStrategy : searches with
 
 BreadthFirstSearch ..|> SearchStrategy : implements
 SearchStrategy ..> Function : uses
-SearchStrategy "1" *-- "2" Position : compose of
+SearchStrategy ..> Position : uses
 
 @enduml
 
