@@ -16,13 +16,13 @@ import javafx.stage.Stage;
  * and connects it to the corresponding controller. It also manages the 
  * view system using {@link ViewManager} and sets the application window properties.</p>
  * 
- * <p>This class extends {@link javafx.application.Application} and uses 
+ * <p>This class extends {@link Application} and uses 
  * JavaFX's lifecycle methods.</p>
  */
 public class GameApp
     extends Application {
 
-    /** Manages the different views (scenes) of the application. */
+    /** Manages the different views of the application. */
     private ViewManager viewManager = ViewManager.getInstance();
 
     /** The main menu view shown when the application starts. */

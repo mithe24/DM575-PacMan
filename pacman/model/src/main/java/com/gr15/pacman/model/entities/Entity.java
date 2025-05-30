@@ -20,14 +20,28 @@ import com.gr15.pacman.model.Position;
  */
 public abstract class Entity {
 
+    /** Epsilon is used as tolerance when comparing floating point numbers. */
+    private static final double EPSILON = 1e-5;
+
+    /** {@link Position} for tile coordinates */
     private Position position;
+
+    /** X component of sub tile position */
     private float subTileX = 0.5f;
+
+    /** Y component of sub tile position */
     private float subTileY = 0.5f;
 
+    /** Radius of the entity */
     private double radius;
 
+    /** Current {@link Direction} in which the entity is moving */
     private Direction currentDirection = Direction.NONE;
+
+    /** Next {@link Direction} in which the entity will move */
     private Direction nextDirection = Direction.NONE;
+
+    /** Speed of the entity, in tiles pr second */
     private double speed;
 
     /** Enumeration of all possible directions entities can move in. */
@@ -51,7 +65,7 @@ public abstract class Entity {
             throw new IllegalArgumentException("radius must be positive");
         }
         if (speed < 0) {
-            throw new IllegalArgumentException("Speed must be a positive number");
+            throw new IllegalArgumentException("Speed must be non-negative");
         }
         this.radius = radius;
         this.position = startPos;
@@ -93,7 +107,7 @@ public abstract class Entity {
         double distanceToCenter = Math.abs(subSecondary - center);
 
         /* Snap to secondary axis center first */
-        if (distanceToCenter > 0.00003) {
+        if (distanceToCenter > EPSILON) {
             double moveToCenter = Math.min(distanceToMove, distanceToCenter);
             subSecondary += (subSecondary < center ? 1 : -1) * moveToCenter;
             distanceToMove -= moveToCenter;
@@ -106,7 +120,7 @@ public abstract class Entity {
             subTileY = (float)subSecondary;
         }
 
-        while (distanceToMove > 0.00003) {
+        while (distanceToMove > EPSILON) {
             /* Capping movement distance to a single tile */
             double maxStep = directionSign > 0 ? 1.0 - subPrimary : subPrimary;
             double step = Math.min(distanceToMove, maxStep);
@@ -140,7 +154,7 @@ public abstract class Entity {
             subTileX = (float)subPrimary;
         }
 
-        if (canMoveNext && distanceToCenter < 0.0003) {
+        if (canMoveNext && distanceToCenter < EPSILON) {
             currentDirection = nextDirection;
             nextDirection = Direction.NONE;
         }
@@ -312,33 +326,52 @@ public abstract class Entity {
      *
      * @param newX The new sub-tile X coordinate.
      */
-    public void setSubTileX(float newX) { this.subTileX = newX; }
+    public void setSubTileX(float newX) {
+        this.subTileX = newX;
+    }
 
     /**
      * Sets the entity's sub-tile Y offset.
      *
      * @param newY The new sub-tile Y coordinate.
      */
-    public void setSubTileY(float newY) { this.subTileY = newY; }
+    public void setSubTileY(float newY) {
+        this.subTileY = newY;
+    }
 
     /**
      * Sets the entity's collision radius.
      *
      * @param newRad The new radius value.
      */
-    public void setRadius(double newRad) { this.radius = newRad; }
+    public void setRadius(double newRadius) {
+        if (newRadius <= 0) {
+            throw new IllegalArgumentException("radius must be positive");
+        }
+        this.radius = newRadius;
+    }
 
     /**
      * Sets a new speed for the entity.
      *
      * @param newSpeed the new speed value in tiles per second.
      */
-    public void setSpeed(double newSpeed) { this.speed = newSpeed; }
+    public void setSpeed(double newSpeed) {
+        if (newSpeed < 0) {
+            throw new IllegalArgumentException("Speed must be non-negative");
+        }
+        this.speed = newSpeed;
+    }
 
     /**
      * Requests the entity to change direction at the next available opportunity.
      *
      * @param newDir the desired {@link Direction}.
      */
-    public void setDirection(Direction newDir) { this.nextDirection = newDir; }
+    public void setDirection(Direction newDir) {
+        if (newDir == null) {
+                throw new IllegalArgumentException("newDir must not be null");
+        }
+        this.nextDirection = newDir;
+    }
 }

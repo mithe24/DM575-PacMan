@@ -12,12 +12,12 @@ import org.json.JSONTokener;
 import com.gr15.pacman.model.GameState.TileType;
 
 /**
- * Utility class for building a {@link GameConfig} instance from a JSON file.
+ * Utility factory class for building a {@link GameConfig} instance from a JSON file.
  *
  * <p> This class provides methods to parse a JSON configuration and convert it into
  * an instance of {@code GameConfig}, handling all necessary conversions and validations. </p>
  */
-public class GameConfigBuilder {
+public class GameConfigFactory {
 
     /**
      * Parses a JSON configuration file from an {@link InputStream},
@@ -28,7 +28,7 @@ public class GameConfigBuilder {
      * @throws RuntimeException if the JSON is malformed
      *      or if an I/O error occurs during reading.
      */
-    public static GameConfig fromJson(InputStream inputStream) {
+    public static final GameConfig fromJson(InputStream inputStream) {
         /* Notice the reader gets closed by
          * the try-with-resource statement */
         try (InputStreamReader reader = new InputStreamReader(inputStream)) {
@@ -51,7 +51,7 @@ public class GameConfigBuilder {
      * @return the constructed {@code GameConfig} instance.
      * @throws RuntimeException if required fields are missing or have invalid types.
      */
-    private static GameConfig buildFromJsonObject(JSONObject jsonObject) {
+    private static final GameConfig buildFromJsonObject(JSONObject jsonObject) {
         try {
             TileType[][] initialBoard = parseBoard(jsonObject.getJSONArray("board"));
 
@@ -137,4 +137,7 @@ public class GameConfigBuilder {
 
         return tileBoard;
     }
+
+    /** Private constructor to prevent external instantiation */
+    private GameConfigFactory() {}
 }

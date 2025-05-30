@@ -10,8 +10,7 @@ import com.gr15.pacman.view.screen.MainMenuView;
 public class MainMenuController {
 
     /**
-     * Constructs a new {@code MainMenuController} with the given
-     * view manager and main menu view.
+     * Constructs a new {@code MainMenuController} with the given main menu view.
      *
      * @param mainMenuView the view representing the main menu UI
      * @throws IllegalArgumentException if mainMenuView is {@code null}

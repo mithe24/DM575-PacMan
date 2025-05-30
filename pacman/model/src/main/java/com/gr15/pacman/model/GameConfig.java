@@ -4,8 +4,8 @@ import com.gr15.pacman.model.GameState.TileType;
 
 /**
  * Represents the configuration for a Pac-Man-style game.
- * This class is immutable and ensures defensive copying of the initial game board to
- * maintain data integrity.
+ * This class is immutable and ensures defensive copying
+ * of the initial game board to maintain data integrity.
  *
  * @param initialBoard The initial layout of the game board.
  * @param powerModeDuration Duration (in seconds) that Pac-Man remains in

@@ -36,6 +36,13 @@ public class Ghost
     public Ghost(Position startPos, double speed, double radius,
         Position goal, GhostType type, SearchStrategy searchStrategy) {
         super(startPos, radius, speed);
+        if (goal == null) {
+            throw new IllegalArgumentException("goal must not be null");
+        }
+        if (searchStrategy == null) {
+            throw new IllegalArgumentException("searchStrategy must not be null");
+        }
+        
         this.goal = goal;
         this.ghostType = type;
         this.searchStrategy = searchStrategy;
@@ -47,9 +54,14 @@ public class Ghost
      *
      * @param board The game board used to determine walkable tiles.
      * @param deltaSeconds Time passed since the last frame.
+     * @throws IllegalArgumentException if board is null.
      */
     @Override
     public void move(TileType[][] board, double deltaSeconds) {
+        if (board == null) {
+            throw new IllegalArgumentException("board must not be null");
+        }
+
         List<Position> path = searchStrategy.search(
             getPosition(),
             goal,

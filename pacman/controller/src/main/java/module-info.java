@@ -4,6 +4,8 @@
 module com.gr15.pacman.controller {
     requires javafx.controls;
     requires transitive javafx.graphics;
+    requires javafx.base;
+
     requires transitive com.gr15.pacman.view;
     requires com.gr15.pacman.model;
 

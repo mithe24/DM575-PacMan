@@ -17,6 +17,9 @@ import com.gr15.pacman.model.entities.searching.BreadthFirstSearch;
  */
 public class GameState {
 
+    /** Epsilon is used as tolerance when comparing floating point numbers. */
+    private static final double EPSILON = 1e-5;
+
     /** Configuration settings for the game such as initial board,
      * speeds, and start positions. */
     private final GameConfig config;
@@ -35,7 +38,10 @@ public class GameState {
 
     /** The remaining duration of power mode (in seconds),
      * during which Pacman can eat ghosts. */
-    private double powerModeDuration = 0;
+    private double powerModeDuration = 0.0;
+
+    /** The remaining duration of time out, in which no game updates occurs */
+    private double timeOutDuration = 0.0;
 
     /** The number of remaining lives for the player. */
     private int lives;
@@ -45,6 +51,11 @@ public class GameState {
 
     /** Enumeration of possible tile types on the board. */
     public enum TileType { WALL, EMPTY, PELLET, POWER_PELLET };
+
+
+    /*************************************************************
+     *                         CONSTRUCTOR                       *
+     *************************************************************/
 
     /**
      * Constructs a new {@code GameState} with the specified game configuration.
@@ -76,6 +87,10 @@ public class GameState {
             0.5, pacman.getPosition(), GhostType.ORANGE, new BreadthFirstSearch()));
     }
 
+    /*************************************************************
+     *                          GAME LOGIC                       *
+     *************************************************************/
+
     /**
      * Updates the game state based on the elapsed time.
      * Moves Pacman and ghosts, handles power mode duration, detects collisions,
@@ -84,13 +99,19 @@ public class GameState {
      * @param deltaSeconds the time elapsed since the last update (in seconds)
      */
     public void update(double deltaSeconds) {
+
+        if (timeOutDuration > EPSILON) {
+            timeOutDuration -= deltaSeconds;
+            return; /* Skip updating everything else */
+        }
+
         pacman.move(board, deltaSeconds);
 
         /* Power mode */
         powerModeDuration -= deltaSeconds;
         powerModeDuration = Math.max(powerModeDuration, 0);
 
-        if (powerModeDuration < 0.0003) {
+        if (powerModeDuration < EPSILON) {
             for (Ghost ghost : ghosts) {
                 ghost.setGoal(pacman.getPosition());
             }
@@ -109,7 +130,7 @@ public class GameState {
         for (Ghost ghost : ghosts) {
             ghost.move(board, deltaSeconds);
             if (EntityUtils.hasCollided(pacman, ghost)
-                && powerModeDuration < 0.0003) {
+                && powerModeDuration < EPSILON) {
                 pacmanDied();
             } else if (EntityUtils.hasCollided(pacman, ghost)) {
                 ghostDied(ghost);
@@ -133,23 +154,47 @@ public class GameState {
         }
     }
 
+    /*************************************************************
+     *                      HELPER FUNCTIONS                     *
+     *************************************************************/
+
     /**
      * Handles Pacman's death by decrementing lives, resetting Pacman's position
-     * and direction. Does not handle game over logic here.
+     * and direction. It also resets the position of all ghosts.
+     * Does not handle game over logic here.
      */
     private void pacmanDied() {
         lives--;
+        timeOutDuration = 2.0;
 
         for (Ghost ghost : ghosts) {
             switch (ghost.getGhostType()) {
-                case RED -> ghost.setPosition(config.redGhostStartPosition());
-                case BLUE -> ghost.setPosition(config.blueGhostStartPosition());
-                case PINK -> ghost.setPosition(config.pinkGhostStartPosition());
-                case ORANGE -> ghost.setPosition(config.orangeGhostStartPosition());
+                case RED -> {
+                    ghost.setPosition(config.redGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
+                case BLUE -> {
+                    ghost.setPosition(config.blueGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
+                case PINK -> {
+                    ghost.setPosition(config.pinkGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
+                case ORANGE -> {
+                    ghost.setPosition(config.orangeGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
             }
         }
 
         pacman.setPosition(config.pacmanStartPosition());
+        pacman.setSubTileX(0.5f);
+        pacman.setSubTileY(0.5f);
         pacman.setDirection(Direction.NONE);
     }
 
@@ -160,14 +205,29 @@ public class GameState {
      * @param ghost the ghost that died (must not be {@code null})
      */
     private void ghostDied(Ghost ghost) {
-        assert ghost != null;
 
         score += 50;
         switch (ghost.getGhostType()) {
-            case RED -> ghost.setPosition(config.redGhostStartPosition());
-            case BLUE -> ghost.setPosition(config.blueGhostStartPosition());
-            case PINK -> ghost.setPosition(config.pinkGhostStartPosition());
-            case ORANGE -> ghost.setPosition(config.orangeGhostStartPosition());
+            case RED -> {
+                ghost.setPosition(config.redGhostStartPosition());
+                ghost.setSubTileX(0.5f);
+                ghost.setSubTileY(0.5f);
+            }
+            case BLUE -> {
+                ghost.setPosition(config.blueGhostStartPosition());
+                ghost.setSubTileX(0.5f);
+                ghost.setSubTileY(0.5f);
+            }
+            case PINK -> {
+                ghost.setPosition(config.pinkGhostStartPosition());
+                ghost.setSubTileX(0.5f);
+                ghost.setSubTileY(0.5f);
+            }
+            case ORANGE -> {
+                ghost.setPosition(config.orangeGhostStartPosition());
+                ghost.setSubTileX(0.5f);
+                ghost.setSubTileY(0.5f);
+            }
         }
     }
 
@@ -183,10 +243,26 @@ public class GameState {
 
         for (Ghost ghost : ghosts) {
             switch (ghost.getGhostType()) {
-                case RED -> ghost.setPosition(config.redGhostStartPosition());
-                case BLUE -> ghost.setPosition(config.blueGhostStartPosition());
-                case PINK -> ghost.setPosition(config.pinkGhostStartPosition());
-                case ORANGE -> ghost.setPosition(config.orangeGhostStartPosition());
+                case RED -> {
+                    ghost.setPosition(config.redGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
+                case BLUE -> {
+                    ghost.setPosition(config.blueGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
+                case PINK -> {
+                    ghost.setPosition(config.pinkGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
+                case ORANGE -> {
+                    ghost.setPosition(config.orangeGhostStartPosition());
+                    ghost.setSubTileX(0.5f);
+                    ghost.setSubTileY(0.5f);
+                }
             }
         }
     }
@@ -211,6 +287,10 @@ public class GameState {
         return numberOfItemsLeft == 0 || lives <= 0;
     }
 
+    /*************************************************************
+     *                          GETTERS                          *
+     *************************************************************/
+
     /**
      * Returns the current game board.
      *
@@ -223,7 +303,7 @@ public class GameState {
     /**
      * Returns the current Pacman entity.
      *
-     * @return the Pacman
+     * @return the Pacman {@link Entity}
      */
     public Pacman getPacman() {
         return this.pacman;
@@ -232,7 +312,7 @@ public class GameState {
     /**
      * Returns the list of ghost entities.
      *
-     * @return the ghosts
+     * @return list of all ghosts
      */
     public List<Ghost> getGhosts() {
         return this.ghosts;
@@ -241,7 +321,7 @@ public class GameState {
     /**
      * Returns the current score.
      *
-     * @return the score
+     * @return the current score
      */
     public int getScore() {
         return this.score;
@@ -250,7 +330,7 @@ public class GameState {
     /**
      * Returns the number of remaining lives.
      *
-     * @return the lives
+     * @return the current remaining lives
      */
     public int getLives() {
         return this.lives;
@@ -264,6 +344,10 @@ public class GameState {
     public double getPowerModeDuration() {
         return this.powerModeDuration;
     }
+
+    /*************************************************************
+     *                          SETTERS                          *
+     *************************************************************/
 
     /**
      * Sets the game board.

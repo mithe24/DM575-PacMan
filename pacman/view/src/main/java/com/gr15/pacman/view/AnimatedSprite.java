@@ -6,10 +6,10 @@ import javafx.scene.image.Image;
 /**
  * Represents an animated sprite that cycles through multiple image frames over time.
  * 
- * <p>This class extends {@link Sprite} and adds support for animation by switching
+ * <p> This class extends {@link Sprite} and adds support for animation by switching
  * between a sequence of images (frames) at a fixed interval (frame time).
  * The animation progresses by calling the {@link #update(double)} method
- * with the time delta since the last update.</p>
+ * with the time delta since the last update. </p>
  * 
  * <p>The sprite is rendered using the current frame image when
  * {@link #render(GraphicsContext)} is called.</p>
@@ -28,26 +28,21 @@ public class AnimatedSprite extends Sprite {
     /** The time (in seconds) since the last frame update. */
     private double timeSinceLastFrame = 0.0;
 
-    /** Boolean to keep track if going forward or backwards through array */
+    /** Boolean to keep track if going forward or backwards through the array */
     private boolean forward = true;
 
     /**
-     * Constructs a new {@code AnimatedSprite} with the specified
-     * animation frames, position, and size.
-     * 
+     * {@inheritDoc}
+     *
      * @param frames the array of {@link Image} objects representing animation frames
-     * @param x the X-coordinate of the sprite's top-left corner
-     * @param y the Y-coordinate of the sprite's top-left corner
-     * @param width the width of the sprite
-     * @param height the height of the sprite
      * @throws IllegalArgumentException if {@code frames} is null or empty
      */
     public AnimatedSprite(Image[] frames, double x, double y,
             double width, double height) {
         super(frames[0], x, y, width, height);
         if (frames == null || frames.length == 0) {
-            throw new IllegalArgumentException("""
-                Animation frames must not be null or empty""");
+            throw new IllegalArgumentException(
+                "Animation frames must not be null or empty");
         }
         this.frames = frames;
     }

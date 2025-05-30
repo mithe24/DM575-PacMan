@@ -31,11 +31,12 @@ public final class HandlerFactory {
 
     /**
      * Creates an {@link EventHandler} for {@link ActionEvent}
-     * that uses a supplier to get input, and then passes it to a consumer action.
+     * that uses a supplier to get input,
+     * and then passes it to a {@link Consumer} action.
      *
      * @param inputSupplier the supplier that provides input when the event occurs
      * @param action the consumer that performs an action using the input
-     * @param <T> the type of input supplied
+     * @param T the type of input supplied
      * @return the event handler
      */
     public static <T> EventHandler<ActionEvent> createHandler(
@@ -72,7 +73,7 @@ public final class HandlerFactory {
      * @param matchKey the key code to match
      * @param inputSupplier the supplier that provides input when the event occurs
      * @param action the consumer that performs an action using the input
-     * @param <T> the type of input supplied
+     * @param T the type of input supplied
      * @return the key event handler
      */
     public static <T> EventHandler<KeyEvent> createKeyHandler(
@@ -92,7 +93,7 @@ public final class HandlerFactory {
      * @param actions a map of key codes to runnable actions
      * @return the key event handler
      */
-    public static EventHandler<KeyEvent> createKeyEventHandler(
+    public static EventHandler<KeyEvent> createKeyHandler(
         Map<KeyCode, Runnable> actions) {
         return event -> {
             Runnable action = actions.get(event.getCode());

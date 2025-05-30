@@ -5,10 +5,18 @@ import com.gr15.pacman.controller.HandlerFactory;
 import com.gr15.pacman.view.screen.GameOverView;
 
 /**
- * GameOverController
+ * The {@code GameOverController} handles interactions on the main menu screen.
  */
 public class GameOverController {
 
+    /**
+     * Constructs a new {@code GameOverController} with the given gameOverView.
+     *
+     * @param gameOverView the view representing the game over UI
+     * @param gameController the controller of the current game
+     * @throws IllegalArgumentException if GameOverView is {@code null} or
+     *      {@link GameOverController} is null.
+     */
     public GameOverController(GameOverView gameOverView, GameController gameController) {
         if (gameOverView == null) {
             throw new IllegalArgumentException("gameOverView must not be null");

@@ -41,11 +41,11 @@ public record Position(int x, int y) {
     /**
      * Checks if this position is within the bounds of the provided 2D board.
      *
-     * @param board the tile board to check against (must not be {@code null})
+     * @param board the board to check against (must not be {@code null})
      * @return {@code true} if the position is within the board, {@code false} otherwise
      * @throws IllegalArgumentException if {@code board} is {@code null}
      */
-    public boolean inBounds(TileType[][] board) {
+    public <T> boolean inBounds(T[][] board) {
         if (board == null) {
             throw new IllegalArgumentException("board must not be null");
         }

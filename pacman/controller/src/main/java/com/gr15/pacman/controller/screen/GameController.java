@@ -2,36 +2,28 @@ package com.gr15.pacman.controller.screen;
 
 import java.util.Map;
 
+import com.gr15.pacman.controller.AppAction;
 import com.gr15.pacman.controller.HandlerFactory;
 import com.gr15.pacman.model.GameState;
 import com.gr15.pacman.model.entities.Entity.Direction;
-import com.gr15.pacman.view.ViewManager;
-import com.gr15.pacman.view.screen.GameOverView;
 import com.gr15.pacman.view.screen.GameView;
-import com.gr15.pacman.view.screen.YouWonView;
-import com.gr15.pacman.view.ViewManager.ViewKeys;
-import com.gr15.pacman.view.screen.PauseView;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 
 /**
  * The {@code GameController} class manages the core game loop,
- * user input handling, and interaction between the game state,
- * view, and view manager.
+ * user input handling, and interaction between the game state and the view.
  * 
- * <p>It uses a JavaFX {@link AnimationTimer} to continuously update
- * the game state and render the game view at regular intervals.</p>
+ * <p> It uses a JavaFX {@link AnimationTimer} to continuously update
+ * the game state and render the game view at regular intervals. </p>
  */
 public class GameController {
-
-    /** Manages switching between different views/screens. */
-    private ViewManager viewManager = ViewManager.getInstance();
 
     /** Reference to the current game state. */
     private final GameState gameState;
 
-    /** The main game loop running. */
+    /** The main game loop. */
     private final AnimationTimer gameLoop;
 
     /** Timestamp of the last update, used to calculate elapsed time. */
@@ -62,17 +54,9 @@ public class GameController {
             KeyCode.RIGHT, () -> gameState.getPacman().setDirection(Direction.RIGHT),
             KeyCode.PAGE_UP, () -> gameView.changeZoom(0.1),
             KeyCode.PAGE_DOWN, () -> gameView.changeZoom(-0.1),
-            KeyCode.ESCAPE, () -> {
-                viewManager.showView(ViewKeys.PAUSE_VIEW);
-                stopGameLoop();
-            }
+            KeyCode.ESCAPE, () -> AppAction.PAUSE.accept(GameController.this)
         );
-        gameView.setOnKeyPressed(HandlerFactory.createKeyEventHandler(keyBindings));
-
-        PauseView pauseView = new PauseView();
-        viewManager.addView(ViewKeys.PAUSE_VIEW, pauseView);
-
-        new PauseController(pauseView, this);
+        gameView.setOnKeyPressed(HandlerFactory.createKeyHandler(keyBindings));
 
         gameLoop = new AnimationTimer() {
 
@@ -84,27 +68,11 @@ public class GameController {
                 }
 
                 if (gameState.isWon()) {
-                    /* Removing potential unrelated views */
-                    viewManager.removeView(ViewKeys.PAUSE_VIEW);
-                    viewManager.removeView(ViewKeys.GAME_OVER_VIEW);
-                    viewManager.removeView(ViewKeys.YOU_WON_VIEW);
-
-                    YouWonView youWonView = new YouWonView(gameState.getScore());
-                    viewManager.addView(ViewKeys.YOU_WON_VIEW, youWonView);
-                    viewManager.showView(ViewKeys.YOU_WON_VIEW);
-                    new YouWonController(youWonView, GameController.this);
-                    stopGameLoop();
+                    AppAction.YOU_WON.accept(
+                        (Integer)gameState.getScore(), GameController.this);
                 } else if(gameState.gameOver()) {
-                    /* Removing potential unrelated views */
-                    viewManager.removeView(ViewKeys.PAUSE_VIEW);
-                    viewManager.removeView(ViewKeys.GAME_OVER_VIEW);
-                    viewManager.removeView(ViewKeys.YOU_WON_VIEW);
-
-                    GameOverView gameOverView = new GameOverView(gameState.getScore());
-                    viewManager.addView(ViewKeys.GAME_OVER_VIEW, gameOverView);
-                    viewManager.showView(ViewKeys.GAME_OVER_VIEW);
-                    new GameOverController(gameOverView, GameController.this);
-                    stopGameLoop();
+                    AppAction.GAME_OVER.accept(
+                        (Integer)gameState.getScore(), GameController.this);
                 }
 
                 double deltaSeconds = (now - lastUpdate) / 1_000_000_000.0;
@@ -131,7 +99,7 @@ public class GameController {
     }
 
     /**
-     * Stops the game loop and resets the last update timestamp.
+     * Stops the game loop.
      */
     public void stopGameLoop() {
         lastUpdate = 0;

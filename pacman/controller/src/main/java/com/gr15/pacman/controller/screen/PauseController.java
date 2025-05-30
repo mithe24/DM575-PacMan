@@ -9,16 +9,16 @@ import javafx.scene.input.KeyCode;
 /**
  * The {@code PauseController} handles user interactions on the game's pause screen.
  * 
- * <p>This includes resuming the game, quitting to the main menu,
+ * <p> This includes resuming the game, quitting to the main menu,
  * or exiting the application entirely.
  * It also manages key input while the pause view is active,
- * such as using the ESC key to resume the game.</p>
+ * such as using the ESC key to resume the game. </p>
  */
 public class PauseController {
 
     /**
      * Constructs a new {@code PauseController} with the specified
-     * view, game controller, and view manager.
+     * view and game controller.
      *
      * @param pauseView the pause screen UI
      * @param gameController the game controller to resume or control the game state
