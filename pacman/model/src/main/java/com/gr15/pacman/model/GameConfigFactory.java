@@ -16,8 +16,10 @@ import com.gr15.pacman.model.GameState.TileType;
  *
  * <p> This class provides methods to parse a JSON configuration and convert it into
  * an instance of {@code GameConfig}, handling all necessary conversions and validations. </p>
+ *
+ * <p> This class cannot be extended or instantiated. </p>
  */
-public class GameConfigFactory {
+public final class GameConfigFactory {
 
     /**
      * Parses a JSON configuration file from an {@link InputStream},
