@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.gr15.pacman.controller","l":"com.gr15.pacman.controller"},{"m":"com.gr15.pacman.controller","l":"com.gr15.pacman.controller.screen"}];updateSearchResults();
