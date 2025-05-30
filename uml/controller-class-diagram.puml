@@ -1,0 +1,64 @@
+@startuml
+
+interface Runnable
+interface Consumer
+interface BiConsumer
+interface Supplier
+enum KeyCode
+
+class ViewManager
+
+class AppAction <<utility>> {
+    - static final ViewManager VIEW_MANAGER
+    + static final Runnable QUIT
+    + static final Runnable MAIN_MENU
+    + static final Consumer PAUSE
+    + static final Consumer RESUME
+    + static final Consumer NEW_GAME
+    + static final Consumer PLAY_AGAIN
+    + static final BiConsumer YOU_WON
+    + static final BiConsumer GAME_OVER
+    + static final BiConsumer GAME_OVER
+    --
+    - AppAction()
+}
+
+class HandlerFactory <<utility>> {
+    --
+    + static final EventHandler createHandler(Runnable action)
+    + static final EventHandler createHandler(Supplier inputSupplier, Consumer action)
+    + static final EventHandler createHandler(KeyCode matchKey, Runnable action)
+    + static final EventHandler createKeyHandler(KeyCode matchKey, Supplier inputSupplier, Consumer action)
+    + static final EventHandler createKeyHandler(Map<KeyCode, Runnable> actions)
+    - HandlerFactory()
+}
+
+class GameState
+
+class GameController
+class MainMenuController
+class YouWonController
+class GameOverController
+class PauseController
+
+GameController "1" o-- "1" GameState : has a
+AppAction "1" o-- "1" ViewManager : has a
+
+AppAction <.. GameController : uses
+AppAction <.. MainMenuController : uses
+AppAction <.. YouWonController : uses
+AppAction <.. GameOverController : uses
+AppAction <.. PauseController : uses
+
+HandlerFactory <.. GameController : uses
+HandlerFactory <.. MainMenuController : uses
+HandlerFactory <.. YouWonController : uses
+HandlerFactory <.. GameOverController : uses
+HandlerFactory <.. PauseController : uses
+
+Runnable <.. HandlerFactory : uses
+Consumer <.. HandlerFactory : uses
+Supplier <.. HandlerFactory : uses
+KeyCode <.. HandlerFactory : uses
+
+@enduml

@@ -25,7 +25,7 @@ enum ViewKeys {
     YOU_WON_VIEW
 }
 
-class ViewManager {
+class ViewManager <<singleton>> {
     - StackPane root
     - BaseView currentView
     - Map<ViewKeys, BaseView> views
@@ -66,36 +66,30 @@ class GameView {
 
 class Image
 class GraphicsContext
+class Affine
 abstract Parent
 class GameState
 
-' -------------------------------
-' Inheritance
-' -------------------------------
 Parent <|-- BaseView
 BaseView <|-- MainMenuView
 BaseView <|-- PauseView
 BaseView <|-- YouWonView
 BaseView <|-- GameOverView
 BaseView <|-- GameView
-AnimatedSprite --|> Sprite
+Sprite <|-- AnimatedSprite
 
-' -------------------------------
-' Associations
-' -------------------------------
-GameView --> ResourceManager : fetches textures
-Sprite ..> GraphicsContext : renders on
-ViewManager --> ViewKeys : uses as keys
+ResourceManager <.. GameView : fetches textures
+GraphicsContext <.. Sprite : renders on
+ViewKeys <.. ViewManager : uses as keys
 
-' -------------------------------
-' Aggregations
-' -------------------------------
-ResourceManager --o Image
-ViewManager --o BaseView : manages views
-GameState o-- GameView : renders from
-Image o-- Sprite : has
-Sprite o-- GameView : has
-AnimatedSprite o-- GameView : has
+GameView "1" o-- "1" GameState : renders from
+Sprite "1" o-- "1" Image : compose of
+AnimatedSprite "1" o-- "many" Image : compose of
+ViewManager "1" *-- "many" BaseView : manages views
+ResourceManager "1" *-- "many" Image : compose of
+GameView "1" *-- "many" Sprite : compose of
+GameView "1" *-- "many" AnimatedSprite : compose of
+GameView "1" *-- "1" Affine : compose of
 
 @enduml
 

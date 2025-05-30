@@ -18,15 +18,19 @@ abstract class Entity <<abstract>> {
     + void move(deltaSeconds)
 }
 
-class Pacman <<marker>> {
-}
+class Pacman <<marker>>
+
+interface Function
 
 interface SearchStrategy {
     --
     + void search(Position start, Position goal, Function<Position, Boolean> isWalkable)
 }
 
-class BreadthFirstSearch
+class BreadthFirstSearch {
+    --
+    + void search(Position start, Position goal, Function<Position, Boolean> isWalkable)
+}
 
 class Ghost {
     - SearchStrategy searchStrategy
@@ -37,8 +41,9 @@ class Ghost {
 
 class EntityUtils <<utility>> {
     --
-    + static double distance(Entity arg0, Entity arg1)
-    + static boolean hasCollided(Entity arg0, Entity arg1)
+    + static final double distance(Entity arg0, Entity arg1)
+    + static final boolean hasCollided(Entity arg0, Entity arg1)
+    - EntityUtils()
 }
 
 enum TileType {
@@ -98,23 +103,31 @@ class GameState {
 }
 
 class InputStream
+class JSONArray
+class JSONObject
 
-GameState o-- "1" GameConfig : has a
-GameState o-- "1" Pacman : has 
-GameState o-- "4" Ghost : has
-Entity o-- "1" Position : has a
+GameState "1" *-- "1" GameConfig : compose of
+GameState "1" *-- "1" Pacman : compose of 
+GameState "1" *-- "4" Ghost : compose of
+Entity "1" *-- "1" Position : compose of
+Entity "1" *-- "1" Direction : compose of
+Ghost "1" *-- "1" SearchStrategy : searches with
 
 BreadthFirstSearch ..|> SearchStrategy : implements
+SearchStrategy ..> Function : uses
 
 GameConfigBuilder ..> GameConfig : creates
 GameConfigBuilder ..> InputStream : reads
+GameConfigBuilder ..> Position : uses
+GameConfigBuilder ..> Direction : uses
+GameConfigBuilder ..> TileType : uses
+GameConfigBuilder ..> JSONObject : parses
+GameConfigBuilder ..> JSONArray : parses
 
 Entity <|-- Ghost : extends
 Entity <|-- Pacman : extends
 
-Ghost ..> SearchStrategy : searches with
 GameState ..> TileType : board
-Entity ..> Direction : movement
 Position ..> Direction : offset
 GameState ..> EntityUtils : collision detection
 
