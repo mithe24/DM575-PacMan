@@ -123,10 +123,11 @@ public final class GameConfigFactory {
     private static TileType[][] parseBoard(JSONArray jsonArray) {
         assert jsonArray != null;
 
-        TileType[][] tileBoard = new TileType[jsonArray.length()][jsonArray.getJSONArray(0).length()];
+        TileType[][] tileBoard = new TileType[jsonArray.length()][];
         for (int y = 0; y < tileBoard.length; y++) {
             JSONArray row = jsonArray.getJSONArray(y);
-            for (int x = 0; x < row.length(); x++) {
+            tileBoard[y] = new TileType[row.length()];
+            for (int x = 0; x < tileBoard[y].length; x++) {
                 switch (row.getString(x)) {
                     case "W" -> tileBoard[y][x] = TileType.WALL;
                     case "E" -> tileBoard[y][x] = TileType.EMPTY;
