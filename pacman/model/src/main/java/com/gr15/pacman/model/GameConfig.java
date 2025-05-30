@@ -1,6 +1,7 @@
 package com.gr15.pacman.model;
 
 import com.gr15.pacman.model.GameState.TileType;
+import com.gr15.pacman.model.entities.Pacman;
 
 /**
  * Represents the configuration for a Pac-Man-style game.

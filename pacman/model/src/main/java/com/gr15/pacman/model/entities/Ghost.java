@@ -17,7 +17,20 @@ public class Ghost
     /**
      * Enum representing the four classic ghost types.
      */
-    public enum GhostType { RED, BLUE, PINK, ORANGE };
+    public enum GhostType {
+
+        /** The red ghost */
+        RED,
+
+        /** The blue ghost */
+        BLUE,
+
+        /** The pink ghost */
+        PINK,
+
+        /** The orange ghost */
+        ORANGE
+    };
 
     private GhostType ghostType;
     private SearchStrategy searchStrategy;

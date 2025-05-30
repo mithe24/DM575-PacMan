@@ -73,7 +73,7 @@ public class Sprite {
      * The transformation for rotation is applied around the sprite's center.</p>
      *
      * @param gc the {@link GraphicsContext} to render the sprite to
-     * @trows IllegalArgumentException if gc is {@code null}
+     * @throws IllegalArgumentException if gc is {@code null}
      */
     public void render(GraphicsContext gc) {
         if (gc == null) {
@@ -171,7 +171,7 @@ public class Sprite {
     /**
      * Sets a new image for the sprite.
      * 
-     * @param newImage the new image to set
+     * @param newX the new X-coordinate
      */
     public void setX(double newX) { this.x = newX; }
 

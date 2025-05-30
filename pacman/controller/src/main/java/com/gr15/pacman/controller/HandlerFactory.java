@@ -36,7 +36,7 @@ public final class HandlerFactory {
      *
      * @param inputSupplier the supplier that provides input when the event occurs
      * @param action the consumer that performs an action using the input
-     * @param T the type of input supplied
+     * @param <T> the type of input supplied
      * @return the event handler
      */
     public static <T> EventHandler<ActionEvent> createHandler(
@@ -73,7 +73,7 @@ public final class HandlerFactory {
      * @param matchKey the key code to match
      * @param inputSupplier the supplier that provides input when the event occurs
      * @param action the consumer that performs an action using the input
-     * @param T the type of input supplied
+     * @param <T> the type of input supplied
      * @return the key event handler
      */
     public static <T> EventHandler<KeyEvent> createKeyHandler(

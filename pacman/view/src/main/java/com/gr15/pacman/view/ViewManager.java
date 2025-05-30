@@ -37,10 +37,20 @@ public class ViewManager {
      * Enumeration of all possible view keys used to identify different views.
      */
     public enum ViewKeys {
+
+        /** Key for the main menu view */
         MAIN_MENU_VIEW,
+
+        /** Key for the game view */
         GAME_VIEW,
+
+        /** Key for the pause view */
         PAUSE_VIEW,
+
+        /** Key for the game over view */
         GAME_OVER_VIEW,
+
+        /** Key for the you won view */
         YOU_WON_VIEW
     };
 

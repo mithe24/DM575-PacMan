@@ -115,12 +115,10 @@ Ghost "1" *-- "1" SearchStrategy : searches with
 
 BreadthFirstSearch ..|> SearchStrategy : implements
 SearchStrategy ..> Function : uses
+SearchStrategy ..> Position : uses
 
 GameConfigBuilder ..> GameConfig : creates
 GameConfigBuilder ..> InputStream : reads
-GameConfigBuilder ..> Position : uses
-GameConfigBuilder ..> Direction : uses
-GameConfigBuilder ..> TileType : uses
 GameConfigBuilder ..> JSONObject : parses
 GameConfigBuilder ..> JSONArray : parses
 

@@ -1,0 +1,46 @@
+@startuml
+
+class Position <<record>>
+enum TileType {
+    WALL
+    EMPTY
+    PELLET
+    POWER_PELLET
+}
+class GameConfig <<record>> {
+    + TileType[][] initialBoard
+    + double powerModeDuration
+    + int lives
+    + double ghostSpeed
+    + double pacmanSpeed
+    + int numberOfItems
+    + Position pacmanStartPosition
+    + Position redGhostStartPosition
+    + Position blueGhostStartPosition
+    + Position pinkGhostStartPosition
+    + Position orangeGhostStartPosition
+    --
+    - static TileType[][] deepCopy(TileType[][])
+}
+
+class GameConfigBuilder <<utility>> {
+    --
+    + static GameConfig fromJson(InputStream)
+    - static GameConfig buildFromJsonObject(JSONObject)
+    - static TileType[][] parseBoard(JSONArray)
+}
+
+class InputStream
+class JSONArray
+class JSONObject
+
+GameConfigBuilder ..> GameConfig : creates
+GameConfigBuilder ..> InputStream : reads
+GameConfigBuilder ..> Position : uses
+GameConfigBuilder ..> Direction : uses
+GameConfigBuilder ..> TileType : uses
+GameConfigBuilder ..> JSONObject : parses
+GameConfigBuilder ..> JSONArray : parses
+
+@enduml
+

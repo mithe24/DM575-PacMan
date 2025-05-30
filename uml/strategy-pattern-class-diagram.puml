@@ -1,0 +1,40 @@
+@startuml
+
+class Position <<record>> {
+    + int x
+    + int y
+    --
+    + Position offset(Direction dir)
+    + List<Position> neighbours()
+    + boolean inBounds(TileType[][] board)
+    + double distance(Position)
+}
+
+interface Function
+
+interface SearchStrategy {
+    --
+    + void search(Position start, Position goal, Function<Position, Boolean> isWalkable)
+}
+
+class BreadthFirstSearch {
+    --
+    + void search(Position start, Position goal, Function<Position, Boolean> isWalkable)
+}
+
+class Ghost {
+    - SearchStrategy searchStrategy
+    - Position goal
+    --
+    + void move(deltaSeconds)
+}
+
+Ghost "1" *-- "1" Position : compose of
+Ghost "1" *-- "1" SearchStrategy : searches with
+
+BreadthFirstSearch ..|> SearchStrategy : implements
+SearchStrategy ..> Function : uses
+SearchStrategy "1" *-- "2" Position : compose of
+
+@enduml
+

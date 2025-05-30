@@ -1,5 +1,12 @@
 @startuml
 
+class HBox
+class VBOx
+class BorderPane
+class Canvas
+class Button
+class Label
+
 class Sprite {
     - Image image
     - double x
@@ -52,10 +59,27 @@ abstract class BaseView <<abstract>> {
     + void onExit()
 }
 
-class MainMenuView
-class PauseView
-class YouWonView
-class GameOverView
+class MainMenuView {
+    - Button newGameButton
+    - Button exitButton
+    --
+}
+class PauseView {
+    - Button resumeGameButton
+    - Button mainMenuButton
+    - Button exitButton
+    --
+}
+class YouWonView {
+    - Label score
+    - Button playAgainButton
+    - Button mainMenuButton
+}
+class GameOverView {
+    - Label score
+    - Button playAgainButton
+    - Button mainMenuButton
+}
 
 class GameView {
     --
@@ -90,6 +114,20 @@ ResourceManager "1" *-- "many" Image : compose of
 GameView "1" *-- "many" Sprite : compose of
 GameView "1" *-- "many" AnimatedSprite : compose of
 GameView "1" *-- "1" Affine : compose of
+
+GameView "1" *-- "1" Canvas : compose of
+GameView "1" *-- "1" BorderPane : compose of
+GameView "1" *-- "1" HBox : compose of
+PauseView "1" *-- "1" VBOx : compose of
+PauseView "1" *-- "3" Button : compose of
+MainMenuView "1" *-- "1" VBox : compose of
+MainMenuView "1" *-- "3" Button : compose of
+YouWonView "1" *-- "1" VBox : compose of
+YouWonView "1" *-- "2" Button : compose of
+YouWonView "1" *-- "1" Label : compose of
+GameOverView "1" *-- "1" VBox : compose of
+GameOverView "1" *-- "2" Button : compose of
+GameOverView "1" *-- "1" Label : compose of
 
 @enduml
 

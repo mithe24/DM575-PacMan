@@ -44,9 +44,6 @@ public final class AppAction {
 
     /**
      * Action to switch to winningview.
-     *
-     * @param score is the current score of type {@link Integer}.
-     * @param gameController is the controller of the current game.
      */
     public static final BiConsumer<Integer, GameController> 
         YOU_WON = (score, gameController) -> {
@@ -61,9 +58,6 @@ public final class AppAction {
 
     /**
      * Action to switch to game over view.
-     *
-     * @param score is the current score of type {@link Integer}.
-     * @param gameController is the controller of the current game.
      */
     public static final BiConsumer<Integer, GameController> 
         GAME_OVER = (score, gameController) -> {
@@ -78,8 +72,6 @@ public final class AppAction {
 
     /**
      * Action to switch to pause view.
-     *
-     * @param gameController is the controller of the current game.
      */
     public static final Consumer<GameController> PAUSE = (gameController) -> {
         gameController.stopGameLoop();
@@ -93,8 +85,6 @@ public final class AppAction {
     /**
      * Action to resume a paused game by
      * showing the game view and starting the game loop.
-     *
-     * @param gameController is the controller of the current game.
      */
     public static final Consumer<GameController> RESUME = (gameController) -> {
         VIEW_MANAGER.showView(ViewKeys.GAME_VIEW);
@@ -104,8 +94,6 @@ public final class AppAction {
     /**
      * Action to start a new game using configuration from an InputStream.
      * It sets up the game state, view, and controller, and starts the game loop.
-     *
-     * @param input the {@link InputStream} to load game configuration from a JSON file
      */
     public static final Consumer<InputStream> NEW_GAME = (input) -> {
         GameConfig config = GameConfigFactory.fromJson(input);
@@ -121,8 +109,6 @@ public final class AppAction {
 
     /**
      * Action to reset the current game and start it again from the beginning.
-     *
-     * @param gameController is the controller of the current game.
      */
     public static final Consumer<GameController> PLAY_AGAIN = (gameController) -> {
         VIEW_MANAGER.showView(ViewKeys.GAME_VIEW);

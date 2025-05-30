@@ -6,7 +6,22 @@ interface BiConsumer
 interface Supplier
 enum KeyCode
 
-class ViewManager
+class GameView
+class MainMenuView
+class YouWonView
+class GameOverView
+class PauseView
+
+class ViewManager <<singleton>> {
+    - StackPane root
+    - BaseView currentView
+    - Map<ViewKeys, BaseView> views
+    --
+    + void addView(BaseView view)
+    + void removeView(ViewKeys key)
+    + boolean hasKey(ViewKeys key)
+    + Parent getRoot()
+}
 
 class AppAction <<utility>> {
     - static final ViewManager VIEW_MANAGER
@@ -60,5 +75,24 @@ Runnable <.. HandlerFactory : uses
 Consumer <.. HandlerFactory : uses
 Supplier <.. HandlerFactory : uses
 KeyCode <.. HandlerFactory : uses
+
+Runnable <.. AppAction : uses
+Consumer <.. AppAction : uses
+BiConsumer <.. AppAction : uses
+Supplier <.. AppAction : uses
+KeyCode <.. AppAction : uses
+GameController <.. AppAction : uses
+
+GameController ..> GameView : uses
+MainMenuController ..> MainMenuView : uses
+YouWonController ..> YouWonView : uses
+GameOverController ..> GameOverView : uses
+PauseController ..> PauseView : uses
+
+ViewManager "1" *-- "1" GameView : manages view
+ViewManager "1" *-- "1" MainMenuView : manages view
+ViewManager "1" *-- "1" YouWonView : manages view
+ViewManager "1" *-- "1" GameOverView : manages view
+ViewManager "1" *-- "1" PauseView : manages view
 
 @enduml

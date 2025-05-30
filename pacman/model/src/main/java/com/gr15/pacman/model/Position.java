@@ -42,6 +42,7 @@ public record Position(int x, int y) {
      * Checks if this position is within the bounds of the provided 2D board.
      *
      * @param board the board to check against (must not be {@code null})
+     * @param <T> the datatype of the the 2d array.
      * @return {@code true} if the position is within the board, {@code false} otherwise
      * @throws IllegalArgumentException if {@code board} is {@code null}
      */

@@ -45,13 +45,30 @@ public abstract class Entity {
     private double speed;
 
     /** Enumeration of all possible directions entities can move in. */
-    public enum Direction { UP, DOWN, LEFT, RIGHT, NONE };
+    public enum Direction {
+
+        /** Direction up. */
+        UP,
+
+        /** Direction down. */
+        DOWN,
+
+        /** Direction left. */
+        LEFT,
+
+        /** Direction right. */
+        RIGHT,
+
+        /** Enum value for no direciton. */
+        NONE
+    };
     
     /**
      * Constructs an Entity with the specified starting position and radius.
      *
      * @param startPos The initial tile-based position of the entity.
      * @param radius The collision radius of the entity.
+     * @param speed The speed of which the entity moves, in tiles per second.
      * @throws IllegalArgumentException if any parameter is invalid:
      *      - startPos is null
      *      - radius is less than or equal to zero
@@ -342,7 +359,7 @@ public abstract class Entity {
     /**
      * Sets the entity's collision radius.
      *
-     * @param newRad The new radius value.
+     * @param newRadius The new radius value.
      */
     public void setRadius(double newRadius) {
         if (newRadius <= 0) {

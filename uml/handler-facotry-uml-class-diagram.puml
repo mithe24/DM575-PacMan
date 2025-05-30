@@ -1,0 +1,35 @@
+@startuml
+
+interface Runnable
+interface Consumer
+interface Supplier
+enum KeyCode
+
+class HandlerFactory <<utility>> {
+    --
+    + static final EventHandler createHandler(Runnable action)
+    + static final EventHandler createHandler(Supplier inputSupplier, Consumer action)
+    + static final EventHandler createHandler(KeyCode matchKey, Runnable action)
+    + static final EventHandler createKeyHandler(KeyCode matchKey, Supplier inputSupplier, Consumer action)
+    + static final EventHandler createKeyHandler(Map<KeyCode, Runnable> actions)
+    - HandlerFactory()
+}
+
+class GameController
+class MainMenuController
+class YouWonController
+class GameOverController
+class PauseController
+
+Runnable <.. HandlerFactory : uses
+Consumer <.. HandlerFactory : uses
+Supplier <.. HandlerFactory : uses
+KeyCode <.. HandlerFactory : uses
+
+HandlerFactory <.. GameController : uses
+HandlerFactory <.. MainMenuController : uses
+HandlerFactory <.. YouWonController : uses
+HandlerFactory <.. GameOverController : uses
+HandlerFactory <.. PauseController : uses
+
+@enduml

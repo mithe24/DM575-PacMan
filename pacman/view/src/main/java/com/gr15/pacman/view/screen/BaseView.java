@@ -3,7 +3,7 @@ package com.gr15.pacman.view.screen;
 import javafx.scene.Parent;
 
 /**
- * An abstract base class for all views managed by the {@link ViewManager}.
+ * An abstract base class for all views managed by the {@code ViewManager}.
  * Each view must implement the lifecycle methods {@code onEnter} and {@code onExit}.
  */
 public abstract class BaseView

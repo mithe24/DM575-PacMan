@@ -50,7 +50,20 @@ public class GameState {
     private int numberOfItemsLeft;
 
     /** Enumeration of possible tile types on the board. */
-    public enum TileType { WALL, EMPTY, PELLET, POWER_PELLET };
+    public enum TileType {
+
+        /** The tile type for a wall */
+        WALL,
+
+        /** The tile type for a empty tile */
+        EMPTY,
+
+        /** The tile type for a tile with a pellet */
+        PELLET,
+
+        /** The tile type for a tile with a power pellet */
+        POWER_PELLET
+    };
 
 
     /*************************************************************
@@ -303,7 +316,7 @@ public class GameState {
     /**
      * Returns the current Pacman entity.
      *
-     * @return the Pacman {@link Entity}
+     * @return the Pacman {@link Pacman}
      */
     public Pacman getPacman() {
         return this.pacman;
