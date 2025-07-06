@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.gr15.pacman.view","l":"com.gr15.pacman.view"},{"m":"com.gr15.pacman.view","l":"com.gr15.pacman.view.screen"}];updateSearchResults();

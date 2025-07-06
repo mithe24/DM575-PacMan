@@ -1,1 +1,0 @@
-moduleSearchIndex = [{"l":"com.gr15.pacman.model"}];updateSearchResults();
